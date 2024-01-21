@@ -2,6 +2,7 @@
 // Work package 0
 // Exercise 1
 // Submission code: XXXXXX (provided by your TA-s)
+
 #include <stdio.h>
 
 // Main function in the program, no program arguments supported

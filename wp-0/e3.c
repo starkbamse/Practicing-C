@@ -2,24 +2,23 @@
 // Work package 0
 // Exercise 3
 // Submission code: XXXXXX (provided by your TA-s)
-// Using the stdio and string Macros, we include the declarations and definitions for 
-// input/output and string functions and utilities
+
+//Include section
 #include <stdio.h>
 #include <string.h>
 
+//Main program section
+/*
+    Purpose:
+    This program takes one argument provided by the user, and
+    concatenates it with the string "Hello World! - I'm %s!" and
+    replaces %s with the provided argument.
+*/
+
 // This method provides info on the terminal when -h is typed by the user
 void provideInfo(void) {
-    printf("1- Please compile the programme using your compiler first");
-    printf(" (note that compilation can be different on different operating systems).\n");
-    printf("2- Depending on the way you have compiled the system and on your OS execute the following:\n");
-    printf("    - On Windows, after compilation, you have a .exe file. You need to run this file and provide one argument.\n");
-    printf("      $ [name].exe [provided argument]\n");
-    printf("    - On Unix systems (Mac and Linux) you can run the program using one the following commands:\n");
-    printf("      $ a.out [provided argument]\n");
-    printf("      $ ./[provided name] [provided argument]\n");
-    printf("3- Please note that if you use the -o flag and provide a name hen compiling using a Unix system,\n");
-    printf("   then you cannot run the programme using a.out, but rather the second option only works.\n");
-    printf("4- Note that you must provide only one argument. If none or more than one arguments are provided, the programme does not work.\n");
+    printf("This program can print a help message\n");
+    printf("In order to use this program, write ./a.out <YourName> (Unix) and ./e3.exe <YourName>\n");
 }
 
 /**
