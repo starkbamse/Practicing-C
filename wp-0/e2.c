@@ -22,6 +22,6 @@ int main(int argc, char *argv[]) {
     // Print a string to the console
     printf("Hello World! - I'm %s!\n", providedArg);
 
-    // Returning 0 as a succesful execution of the program
+    // Returning 0 as a successful execution of the program
     return 0;
 }

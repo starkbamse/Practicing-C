@@ -12,7 +12,9 @@
     Purpose:
     This program takes one argument provided by the user, and
     concatenates it with the string "Hello World! - I'm %s!" and
-    replaces %s with the provided argument.
+    replaces %s with the provided argument. If the user uses the -h argument
+    then the program will display a help message. If no argument or more than one
+    argument was used, an error message will be displayed.
 */
 
 // This method provides info on the terminal when -h is typed by the user
@@ -37,7 +39,7 @@ void validateInput(int argc, char *argv[]) {
     } else if (argc < 2) {
         printf("Error - No argument provided. Type -h for help.\n");
     } else {
-        // The first arg is always the programme's name along with its full path
+        // The first arg is always the program's name along with its full path
         // This means that the provided arg is the second argument
         char *providedArg = argv[1];
         // strcmp(str1, str2) is used to compare two strings. It returns 0 if they are equal.
@@ -56,7 +58,7 @@ int main(int argc, char *argv[]) {
 
     // Validate the provided argument by the user and print corresponding messages
     validateInput(argc, argv);
-    // Returning 0 as an succefull execuation of the programme
+    // Returning 0 as a successful excution of the program
     return 0;
 }
 
