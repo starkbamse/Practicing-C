@@ -7,13 +7,19 @@
 #include <stdio.h>
 #include <string.h>
 
-// Main function in the program, no program arguments supported
-int main(int argc, char *argv[]) {
-
-    // Validate the provided argument by the user and print corresponding messages
-    validateInput(argc, argv);
-    // Returning 0 as an succefull execuation of the programme
-    return 0;
+// This method provides info on the terminal when -h is typed by the user
+void provideInfo(void) {
+    printf("1- Please compile the programme using your compiler first");
+    printf(" (note that compilation can be different on different operating systems).\n");
+    printf("2- Depending on the way you have compiled the system and on your OS execute the following:\n");
+    printf("    - On Windows, after compilation, you have a .exe file. You need to run this file and provide one argument.\n");
+    printf("      $ [name].exe [provided argument]\n");
+    printf("    - On Unix systems (Mac and Linux) you can run the program using one the following commands:\n");
+    printf("      $ a.out [provided argument]\n");
+    printf("      $ ./[provided name] [provided argument]\n");
+    printf("3- Please note that if you use the -o flag and provide a name hen compiling using a Unix system,\n");
+    printf("   then you cannot run the programme using a.out, but rather the second option only works.\n");
+    printf("4- Note that you must provide only one argument. If none or more than one arguments are provided, the programme does not work.\n");
 }
 
 /**
@@ -46,17 +52,14 @@ void validateInput(int argc, char *argv[]) {
     }
 }
 
-// This method provides info on the terminal when -h is typed by the user
-void provideInfo(void) {
-    printf("1- Please compile the programme using your compiler first");
-    printf(" (note that compilation can be different on different operating systems).\n");
-    printf("2- Depending on the way you have compiled the system and on your OS execute the following:\n");
-    printf("    - On Windows, after compilation, you have a .exe file. You need to run this file and provide one argument.\n");
-    printf("      $ [name].exe [provided argument]\n");
-    printf("    - On Unix systems (Mac and Linux) you can run the program using one the following commands:\n");
-    printf("      $ a.out [provided argument]\n");
-    printf("      $ ./[provided name] [provided argument]\n");
-    printf("3- Please note that if you use the -o flag and provide a name hen compiling using a Unix system,\n");
-    printf("   then you cannot run the programme using a.out, but rather the second option only works.\n");
-    printf("4- Note that you must provide only one argument. If none or more than one arguments are provided, the programme does not work.\n");
+// Main function in the program, no program arguments supported
+int main(int argc, char *argv[]) {
+
+    // Validate the provided argument by the user and print corresponding messages
+    validateInput(argc, argv);
+    // Returning 0 as an succefull execuation of the programme
+    return 0;
 }
+
+
+
