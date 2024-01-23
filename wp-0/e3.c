@@ -1,7 +1,7 @@
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
 // Work package 0
 // Exercise 3
-// Submission code: XXXXXX (provided by your TA-s)
+// Submission code: 928219 (provided by your TA-s)
 
 //Include section
 #include <stdio.h>
@@ -46,6 +46,8 @@ void validateInput(int argc, char *argv[]) {
         printf("Error - No argument provided. Type -h for help.\n");
     } else {
         providedArg = argv[1];
+        // comapre the string to -h. If it is -h then we call the function that provides information.
+        // else, we show the greeting message on the terminal.
         is_h = strcmp("-h", providedArg);
         if (is_h == 0) {
             provideInfo();
