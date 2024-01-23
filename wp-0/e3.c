@@ -34,16 +34,19 @@ void provideInfo(void) {
  * @param argv The array of arguments provided to the programme
 */
 void validateInput(int argc, char *argv[]) {
+    // The first arg is always the program's name along with its full path
+    // This means that the provided arg is the second argument
+    char *providedArg;
+    // strcmp(str1, str2) is used to compare two strings. It returns 0 if they are equal.
+    int is_h;
+
     if (argc > 2) {
         printf("Error - More than one argument provided. Type -h for help.\n");
     } else if (argc < 2) {
         printf("Error - No argument provided. Type -h for help.\n");
     } else {
-        // The first arg is always the program's name along with its full path
-        // This means that the provided arg is the second argument
-        char *providedArg = argv[1];
-        // strcmp(str1, str2) is used to compare two strings. It returns 0 if they are equal.
-        int is_h = strcmp("-h", providedArg);
+        providedArg = argv[1];
+        is_h = strcmp("-h", providedArg);
         if (is_h == 0) {
             provideInfo();
         } else {
@@ -55,7 +58,6 @@ void validateInput(int argc, char *argv[]) {
 
 // Main function in the program, no program arguments supported
 int main(int argc, char *argv[]) {
-
     // Validate the provided argument by the user and print corresponding messages
     validateInput(argc, argv);
     // Returning 0 as a successful excution of the program
