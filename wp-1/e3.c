@@ -37,9 +37,9 @@ numberOfGuesses = 0; // Counter for number of made guesses
 do
 {
    // Ask user for a number and save the input
-   printf("Enter a number between 1 and 100: \n");
+   printf("Enter a number between 1 and 100: ");
    scanf("%d", &input);
-   printf("%d", input);
+
    // If the input is not in the range, ask for a valid input.
     if ( input > 100 || input < 1) {
         printf("Please enter a valid integer between 1 and 100.\n");

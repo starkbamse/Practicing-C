@@ -81,6 +81,8 @@ else if (isDecimalNumber(argv[1]) == 0) {
         decimalNumber = decimalNumber/2;    
     } 
 
+// Modify this to not be magic numbers so alex is happy :(
+    
     // Check if the inputted number is 256 or greater (that is when the 16 bit numbers start).
     if (atoi(argv[1]) >= 256) { 
         // Then print all 16 bits of the binary number.     
@@ -115,3 +117,5 @@ else if (isDecimalNumber(argv[1]) == 0) {
     return 0;
 
 }
+
+//NB: MAKE THESE TWO PROGRAS EXECUTE IN A PIPELINE!

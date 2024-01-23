@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     do {
     
     // Ask the user to type a text and save the input.
-    printf("\nType a text to encrypt: ");
+    printf("Type a text to encrypt: ");
     scanf("%s", insertedText);
 
     // Loop through each character in the inputted text.
@@ -66,6 +66,7 @@ int main(int argc, char *argv[]) {
     // Show the encrypted letter to the user
     printf("%c", result);
     }
+    printf("\n");
     
     // Do this as long as the EOF character is detected.
     // feof() method finds EOF characters and stdin means in the standard input.
