@@ -6,6 +6,16 @@
 #define MAX 100         // Defines the maximum number of the values in the table
 #define MAXNUMBER 20    // Defines the maximum value of random numbers
 
+
+/*
+* Purpose: This program generates a 100 random integers with values from 0 to 20.
+* The program counts the fequency of occurance of each value and plots them in a histogram
+*
+* Authors: Kaisa Arumeel, Alexander Säfström, Omid Khodaparast
+*/
+
+
+
 // ------ Function declarations ----------
 
 // This function generates a set of random numbers

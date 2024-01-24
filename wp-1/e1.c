@@ -19,8 +19,9 @@ The program continues to ask for a new number and exits if number isn ́t in the
 * Authors: Kaisa Arumeel, Alexander Säfström, Omid Khodaparast
 */
 int main() {
+
     // Variable declarations
-    int input; // Input integer of the user
+    int input; // Integer inputted by the user
 
     do
     {
@@ -29,23 +30,23 @@ int main() {
         scanf("%d", &input);
         // Case for input 1
         if(input == 1){
-            printf("Input is %d. \n", input);
+            printf("Input is 1.");
         }
         // Case for input 2
         else if(input == 2){
-            printf("Input is %d. \n", input);
+            printf("Input is 2");
         }
         // Case for input 3
         else if(input == 3){
-            printf("Input is %d. \n", input);
+            printf("Input is 3");
         }
         // Case for input 4
         else if(input == 4){
-            printf("Input is %d. \n", input);
+            printf("Input is 4");
         }
         // Case for input 5
         else if(input == 5){
-            printf("Input is %d. \n", input);
+            printf("Input is 5");
         }
     // Prompt the user with the sentence until the input is between 1 and 5.
     } while (input > 0 && input < 6);
