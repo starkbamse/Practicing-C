@@ -9,8 +9,10 @@
 #define UPPER_END 90 // End of the uppercase alphabet ASCII code
 #define LOWER_START 97 // Start of the lowercase alphabet ASCII code
 #define LOWER_END 122 // End of the lowercase alphabet ASCII code
+#define ALPHABET_LENGTH 26 // Length of the alphabet
 
-void shiftAndPrint;
+// Function that has the responsibility to shift and print the shifted characters
+void shiftAndPrint(char* userInput,int shiftBy, int newChar, int alphabetStart, int alphabetEnd);
 
 //Main program section
 
@@ -41,7 +43,6 @@ int main(int argc,char* argv[]){
     int alphabetStart; // Start of the alphabet
     int alphabetEnd; // End of the alphabet
 
-
     // Program logic
 
     // Run the loop until we get a \n.
@@ -67,7 +68,10 @@ int main(int argc,char* argv[]){
             position++;
         }
 
-        shiftAndPrint(&userInput,&shiftBy,&argv,&newChar,&alphabetStart,&alphabetEnd);
+        // Shift the characters and print them
+        // Convert the received char* arg to an int
+        // so that we can use it to access elements in an array.
+        shiftAndPrint(userInput,atoi(argv[1]),newChar,alphabetStart,alphabetEnd);
 
         // Clear the stored userInput
         memset(userInput,0,strlen(userInput));
@@ -80,11 +84,9 @@ int main(int argc,char* argv[]){
     return 0;
 }
 
-void shiftAndPrint(char* userInput,int shiftBy,char* argv[], int newChar, int alphabetStart, int alphabetEnd){
+void shiftAndPrint(char* userInput,int shiftBy, int newChar, int alphabetStart, int alphabetEnd){
     for(int i=0;i<strlen(userInput);i++){
-    // Convert the received char* arg to an int
-    // so that we can use it to access elements in an array.
-    shiftBy = atoi(argv[1]);
+
 
     // Init new character by casting to int.
     newChar = (int)userInput[i];
@@ -111,7 +113,7 @@ void shiftAndPrint(char* userInput,int shiftBy,char* argv[], int newChar, int al
     if(newChar>alphabetEnd){
         // Decrement the length of the alphabet
         // to "loop" back.
-        newChar-=(alphabetEnd-alphabetStart);
+        newChar-=(ALPHABET_LENGTH);
     }
 
     // Print out the character by casting to char
