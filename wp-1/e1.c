@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 //Define section
-#define MAX 5
+
 
 //Main program section
 
@@ -19,9 +19,9 @@
 
 int main(int argc, char* argv[]) {
 
-    //variable declarations
+    // Variable declarations
 
-    //array with pointers that point to the first char in the string.
+    // Array with pointers that point to the first char in the string.
     char* sentences[]={
         "1. Lorem ipsum dolor sit amet, adipiscing elit.",
         "2. Duis at luctus bob augue.",
@@ -29,27 +29,28 @@ int main(int argc, char* argv[]) {
         "4. Etiam vulputate volutpat id maximus.",
         "5. In lorem lectus, vel, posuere et justo."}; 
 
-    int selectedSentence; //number to store the selected sentence
+    int selectedSentence; // Number to store the selected sentence
     
-    //program logic
+    // Program logic
 
     do {
-        //Prompt the user to enter a number
+        // Prompt the user to enter a number
         printf("Please enter a number from 1 to 5.\n");
 
-        //Read decimal input from stdin and store 
-        //it at the memory address of selectedSentence
+        // Read decimal input from stdin and store 
+        // it at the memory address of selectedSentence
         scanf("%d",&selectedSentence);
 
-        //Check if number is within interval before accessing array
+        // Check if number is within interval before accessing array
         if(selectedSentence<=5 && selectedSentence>=1){
-            //Print the selected sentence to stdout.
+            // Print the selected sentence to stdout.
             printf("%s\n",sentences[selectedSentence-1]);
         }
 
-        //We keep repeating this loop until the input
-        //is outside of the interval.
+        // We keep repeating this loop until the input
+        // is outside of the interval.
     } while(selectedSentence<=5 && selectedSentence>=1);
 
+    // Exit gracefully
     return 0;
 }
