@@ -45,6 +45,11 @@ int main(int argc,char* argv[]){
 
     // Program logic
 
+    // If memory allocation failed we exit with error.
+    if(userInput==NULL){
+        exit(1);
+    }
+
     // Run the loop until we get a \n.
     // Executed on every char received.
     while (nextChar != EOF) {
@@ -59,6 +64,11 @@ int main(int argc,char* argv[]){
                 allocation *= 2;
                 // Reallocate the memory by twice of its previous size.
                 userInput = realloc(userInput,allocation);
+                
+                // If memory allocation failed we exit with error.
+                if(userInput==NULL){
+                    exit(1);
+                }
             } 
 
             // Using the address set the char
