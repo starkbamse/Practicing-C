@@ -2,7 +2,8 @@
 #include <stdio.h>
 
 //Define section
-
+#define MIN_INTERVAL 1 // Minimum sentence id
+#define MAX_INTERVAL 5 // Maximum sentence id
 
 //Main program section
 
@@ -35,21 +36,21 @@ int main(int argc, char* argv[]) {
 
     do {
         // Prompt the user to enter a number
-        printf("Please enter a number from 1 to 5.\n");
+        printf("Please enter a number from %d to %d.\n",MIN_INTERVAL,MAX_INTERVAL);
 
         // Read decimal input from stdin and store 
         // it at the memory address of selectedSentence
         scanf("%d",&selectedSentence);
 
         // Check if number is within interval before accessing array
-        if(selectedSentence<=5 && selectedSentence>=1){
+        if(selectedSentence<=MAX_INTERVAL && selectedSentence>=MIN_INTERVAL){
             // Print the selected sentence to stdout.
             printf("%s\n",sentences[selectedSentence-1]);
         }
 
         // We keep repeating this loop until the input
         // is outside of the interval.
-    } while(selectedSentence<=5 && selectedSentence>=1);
+    } while(selectedSentence<=MAX_INTERVAL && selectedSentence>=MIN_INTERVAL);
 
     // Exit gracefully
     return 0;
