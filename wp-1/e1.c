@@ -56,7 +56,7 @@ void printSentences(int number) {
 */
 int readInteger(char *prompt) {
     int inputNum; // the number entered by the user will be saved in this variable
-    // the fucntion gets a string as a argument whihc is a prompt to the user.
+    // the fucntion gets a string as a argument which is a prompt to the user.
     // this printf prints the prompt on the console.
     printf("%s: ", prompt);
     // read the number entered by the user
