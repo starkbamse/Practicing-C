@@ -125,6 +125,9 @@ int main(int argc,char* argv[]){
     // Print the number of ones
     printf("Number of 1s: %d\n",one);
 
+    // Free the occupied memory.
+    free(bRep);
+
     // Exit the program gracefully
     return 0;
 }
