@@ -100,39 +100,37 @@ int main(int argc,char* argv[]){
 
 void shiftAndPrint(char* userInput,int shiftBy, int newChar, int alphabetStart, int alphabetEnd){
     for(int i=0;i<strlen(userInput);i++){
+        // Init new character by casting to int.
+        newChar = (int)*(userInput+i);
 
+        // If the current char is within the interval of
+        // the uppercase alphabet
+        if(newChar<=UPPER_END && newChar>=UPPER_START) {
+            alphabetStart=UPPER_START;
+            alphabetEnd=UPPER_END;
+        // If the current char is within the interval of the
+        // lowercase alphabet
+        } else if(newChar>=LOWER_START && newChar<=LOWER_END) {
+            alphabetStart=LOWER_START;
+            alphabetEnd=LOWER_END;
+        } else {
+            // If no matching alphabet is found.
+            break;
+        }
 
-    // Init new character by casting to int.
-    newChar = (int)*(userInput+i);
+        // Perform the shift
+        newChar+=shiftBy;
 
-    // If the current char is within the interval of
-    // the uppercase alphabet
-    if(newChar<=UPPER_END && newChar>=UPPER_START) {
-        alphabetStart=UPPER_START;
-        alphabetEnd=UPPER_END;
-    // If the current char is within the interval of the
-    // lowercase alphabet
-    } else if(newChar>=LOWER_START && newChar<=LOWER_END) {
-        alphabetStart=LOWER_START;
-        alphabetEnd=LOWER_END;
-    } else {
-        // If no matching alphabet is found.
-        break;
+        // If we are out of the boundary of the alphabet
+        if(newChar>alphabetEnd){
+            // Decrement the length of the alphabet
+            // to "loop" back.
+            newChar-=(ALPHABET_LENGTH);
+        }
+
+        // Print out the character by casting to char
+        printf("%c",((char)newChar));
     }
-
-    // Perform the shift
-    newChar+=shiftBy;
-
-    // If we are out of the boundary of the alphabet
-    if(newChar>alphabetEnd){
-        // Decrement the length of the alphabet
-        // to "loop" back.
-        newChar-=(ALPHABET_LENGTH);
-    }
-
-    // Print out the character by casting to char
-    printf("%c",((char)newChar));
-}
-// Separate the line by adding a newline.
-printf("\n");
+    // Separate the line by adding a newline.
+    printf("\n");
 }
