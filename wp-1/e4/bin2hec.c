@@ -18,11 +18,10 @@ int checkAndReallocateMemory(char* ptr, size_t*allocation); // To check if we ar
 //Main program section
 
 /**
-* This program takes in a decimal number and outputs its
-* binary representation, padded to always ensure that the
-* output is made up of groups of 8 bits.
+* This program takes in a binary number and outputs its
+* hexadecimal representation.
 * 
-* Purpose: To be able to convert decimal numbers to binary numbers
+* Purpose: To be able to convert binary numbers to hexadecimal numbers
 * very fast.
 * DIT632
 * 
@@ -65,6 +64,7 @@ int main(int argc, char* argv[]) {
 
     // Loop through the entire input, increment by groups
     // of 4 or the length of a byte/2.
+    // Note: A hex number represents 4 bits.
     for(int i=0;i<inputLength;i+=(BYTE_LENGTH/2)){
         tempNumber=0;
         // We also need to look at each character 
@@ -183,7 +183,6 @@ int validateInput(int* argc,char*argv[],char** userInput, size_t allocation,int 
     }
     return 1;
 }
-
 
 int assertMemoryAllocated(char* ptr){
     // If result is null it means reallocation failed.
