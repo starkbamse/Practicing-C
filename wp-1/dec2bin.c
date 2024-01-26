@@ -11,7 +11,7 @@
 #define BYTE_LENGTH 8 // The number of bits in a byte
 #define BASE 10 // The defined input base 
 
-int validateInput(int* argc,char*argv[],char* readStdin,int* tempChar,size_t allocation,int *position); // Used to validate user input
+int validateInput(int* argc,char*argv[],char* charInput,int* tempChar,size_t allocation,int *position); // Used to validate user input
 
 //Main program section
 
@@ -33,14 +33,14 @@ int main(int argc, char* argv[]) {
     // Variable declarations
     size_t allocation=INITIAL_MEMORY_ALLOCATION; //Init alloc for conv. result
     char* result = malloc(INITIAL_MEMORY_ALLOCATION); // Alloc mem for conv. result
-    char* readStdin = malloc(INITIAL_MEMORY_ALLOCATION); // Alloc mem for stdin input
+    char* charInput = malloc(INITIAL_MEMORY_ALLOCATION); // Users char input
     long userInput; // Users input converted to long
     int position=0; // Cursor or position in the conversion result.
     int readStdinPosition=0; // Cursor or position for the standard input reading
     int inputOk; // Is input valid or not
     int bitsLeft; // Number of bits left in the byte.
     int conversionLength; // The resulting length of the conversion
-    int tempChar; // ASCII code of the received input.
+    int tempChar; // ASCII code of the received input from stdin.
 
     // Program logic 
 
@@ -54,9 +54,9 @@ int main(int argc, char* argv[]) {
 
     // Call validate input function with arguments and length
     // of arguments.
-    userInput=validateInput(&argc,argv,readStdin,&tempChar,allocation,&readStdinPosition);
+    userInput=validateInput(&argc,argv,charInput,&tempChar,allocation,&readStdinPosition);
 
-    // If the input is valid we will get a 1. 
+    // If the input is valid we will not get a -1. 
     // If the input is invalid we return a 2
     if ( userInput==-1 ) { return 2; }
 
@@ -118,54 +118,66 @@ int main(int argc, char* argv[]) {
     }
     // Finalize the string by adding a newline.
     printf("\n");
-
+    free(charInput);
     free(result);
 }
 
-int validateInput(int* argc,char*argv[],char* readStdin,int* tempChar,size_t allocation,int*position){
-
+int validateInput(int* argc,char*argv[],char* charInput,int* tempChar,size_t allocation,int*position){
     // If the number of arguments is less than 2
     if(*argc<2){
-
-        while(*tempChar=fgetc(stdin)!='\n' && *tempChar!=EOF) {
-            if(strlen(readStdin)+1>allocation){
+        // Since the user has not passed argument we attempt
+        // to read from std input to conform to pipeline
+        // requirements.
+        while((*tempChar=fgetc(stdin))!='\n' && *tempChar!=EOF) {
+            // If the addition of one char to the charInput overruns allocation
+            // attempt to increase the allocation
+            if(strlen(charInput)+1>allocation){
+                // Increment the allocation by 2
                 allocation*=2;
-                *tempChar=realloc(*tempChar,allocation);
-                if(tempChar==NULL) {
-                    exit(2);
+                // Update the charInputs allocation of memory.
+                charInput=realloc(charInput,allocation);
+                // If the allocation failed
+                if(charInput==NULL) {
+                    // Return error code to the main function.
+                    return -1;
                 }
             }
-            readStdin[*position]=(char) *tempChar;
+            // Set the char value of the charInput at current position.
+            charInput[*position]=(char) *tempChar;
+            // Increment position by 1.
             *position+=1;
         }
-
-        // Print the error message.
-        printf("Provide an argument.\n");
-        // Return a local status code.
-        return 1;
+        // If we did not receive any input from stdin
+        if(strlen(charInput)==0){
+            // Print the error message.
+        printf("Provide an argument, or use this program in combination with another program that outputs to stdout.\n");
+            // Return error code since we do not have any input.
+            return -1;
+        }
+    } else {
+        // There is data on argv[1] so lets set the variable
+        charInput=argv[1];
     }
 
     // Loop through the entire first argument,
     // char by char.
-    for(int i=0;i<strlen(argv[1]);i++){
+    for(int i=0;i<strlen(charInput);i++){
         // Cast the current char to its char code.
-        int c=(int) argv[1][i];
+        int c=(int) charInput[i];
         // If the current char code is outside
         // of the valid bounds.
         if(c>MAX_CHAR||c<MIN_CHAR){
             // Print an error message.
             printf("Invalid input provided.\n");
             // Return a local status code.
-            return 1;
+            return -1;
         }
     }
 
-        // Convert the argument to a long
+    // Convert the argument to a long and return it
     // We have already performed validation so
     // We pass NULL to the end_ptr and set base 10.
-    userInput=strtol(argv[1],NULL,BASE);
+    return strtol(charInput,NULL,BASE);
 
-    // Exit gracefully.
-    return 0;
 }
 
