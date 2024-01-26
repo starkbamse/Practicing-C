@@ -38,7 +38,8 @@ int main(int argc, char* argv[]) {
     int inputOk; // Is input valid or not
     int bitsLeft; // Number of bits left in the byte.
     int inputLength; // The user input length
-    
+    int tempNumber;
+
     // Program logic 
 
     // If result is NULL it means that we could not allocate memory.
@@ -46,7 +47,7 @@ int main(int argc, char* argv[]) {
         // Print the error
         printf("Memory allocation failed.");
         // Exit with exit code 1 signalling that there was a problem.
-        return 1;
+        return 2;
     }
 
     // Call validate input function with arguments and length
@@ -66,19 +67,34 @@ int main(int argc, char* argv[]) {
     inputLength=strlen(userInput);
 
     // Loop through the entire input, increment by groups
-    // of 4 or the length of a byte/.
-    for(int i=0;i<inputLength;i+=BYTE_LENGTH/2){
-        int number;
-        for(int x=i;x<BYTE_LENGTH/2;x++){
-            if(x<inputLength){
-                if(userInput[x]=='1'){
-                    number = number | 1;
+    // of 4 or the length of a byte/2.
+    for(int i=0;i<inputLength;i+=(BYTE_LENGTH/2)){
+        tempNumber=0;
+        // We also need to look at each character 
+        // within the group
+        for(int x=0;x<(BYTE_LENGTH/2);x++){
+            // If x+i (entire pos.) is still smaller than the length of the input.
+            if( (x+i) < inputLength){
+                // Since we have entered this part of the loop,
+                // we must shift the bits to make space for the new bit.
+                tempNumber = tempNumber << 1;
+                // If the current char in the group is a 1
+                // We do i+x because i is the group and
+                // x is the position within the group.
+                if(userInput[i+x]=='1'){
+                    // Perform OR operation on the number.
+                    // This will set LSB to 1 if it is not already
+                    // Similar to false | true which will evaluate to true
+                    tempNumber = tempNumber | 1;
                 }
-                if((x+1)<inputLength){
-                    number=number << 1;
-                }
+    
+            } else {
+                // If we cannot access any more data, we can exit loop.
+                break;
             }
+
         }
+        // If increasing the length of result will overrun the allocated memory.
         if((strlen(result)+1)>allocation){
             // Increase the allocation by 2.
             allocation*=2;
@@ -92,17 +108,27 @@ int main(int argc, char* argv[]) {
             // Exit with exit code 2.
             return 2;
         }
-        if(number<10){
-            result[position]='0'+number;
+        // If the resulting integer is less than 10
+        if(tempNumber<10){
+            // Since hex and dec are equal up to the number 10
+            // we can just take the char 0 and increment the
+            // number to the char to get the wanted char.
+            result[position]='0'+tempNumber;
         } else {
-            result[position]=('F'-(15-number));
+            // If its bigger or equal to 10
+            // we can subtract 15-the number to get the
+            // number of chars that we need to subtract
+            // from the maximum hex number which is F.
+            result[position]=('F'-(15-tempNumber));
         }
+        // Increment the position in the resulting string literal.
         position++;
     }
+    // Print the result.
+    printf("%s\n",result);
+    free(result);
 
-    printf("%s",result);
-    // Finalize the string by adding a newline.
-    printf("\n");
+    return 0;
 }
 
 int validateInput(int* argc,char*argv[]){
@@ -129,7 +155,7 @@ int validateInput(int* argc,char*argv[]){
         }
     }
 
-    // Exit gracefully.
+    // Return local status code.
     return 0;
 }
 
