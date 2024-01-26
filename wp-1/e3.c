@@ -55,7 +55,7 @@ int main(int argc,char* argv[]){
 void play(int *guess,int *guesses,int *randomNumber, char* userInput){
 
     // Update the random number
-    *randomNumber=rand()%MAX_RANDOM;    
+    *randomNumber=rand()%MAX_RANDOM+1;    
 
     // Initialize the number of guesses to 0
     *guesses=0;

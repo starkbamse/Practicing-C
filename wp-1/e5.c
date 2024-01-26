@@ -71,7 +71,7 @@ void create_random(int *tab){
     for(int i=0;i<MAX;i++){
         // Set the current element's value to a random value modulus
         // the maximum number that we have set to be generated.
-        *(tab+i)=rand()%MAXNUMBER;
+        *(tab+i)=rand()%MAXNUMBER+1;
     }
 }
 
