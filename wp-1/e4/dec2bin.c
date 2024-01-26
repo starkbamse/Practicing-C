@@ -12,8 +12,8 @@
 #define BASE 10 // The defined input base 
 
 int validateInput(int* argc,char*argv[],char* input,size_t allocation,int position); // Used to validate user input
-int assertMemoryAllocated(char* ptr);
-int checkAndReallocateMemory(char* ptr, size_t*allocation);
+int assertMemoryAllocated(char* ptr); // To ensure memory has been allocated.
+int checkAndReallocateMemory(char* ptr, size_t*allocation); // To check if we are running out of memory and need to reallocate.
 
 //Main program section
 
@@ -132,13 +132,22 @@ int validateInput(int* argc,char*argv[],char* input,size_t allocation,int positi
         // If we did not receive any input from stdin
         if(strlen(input)==0){
             // Print the error message.
-            printf("Provide an argument, or use this program in combination with another program that outputs to stdout.\n");
+            printf("Provide an argument, or use this "\
+            "program in combination with another program that outputs to stdout.\n");
             // Return error code since we do not have any input.
             return -1;
         }
     } else {
-        // There is data on argv[1] so lets set the variable
-        input=argv[1];
+        if(strcmp("-h",argv[1])==0){
+            printf("This program converts decimal numbers to binary numbers.\n"\
+            "Usage: ./a.out <decimal number>\nYou can also use this program in"\
+            "combination with bin2hec: ./dec2bin 12 | ./bin2hec\n");
+            return -1;
+        } else {
+            // There is data on argv[1] so lets set the variable
+            input=argv[1];
+        }
+
     }
 
     // Loop through the entire first argument,

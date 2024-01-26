@@ -11,9 +11,10 @@
 #define BASE 10 // The defined input base 
 
 
-int validateInput(int* argc,char*argv[],char** userInput,size_t allocation,int position); // Used to validate user input
-int assertMemoryAllocated(char* ptr);
-int checkAndReallocateMemory(char* ptr, size_t*allocation);
+int validateInput(int* argc,char*argv[],char** userInput,size_t allocation,int position,int*c); // To validate user input
+int assertMemoryAllocated(char* ptr); // To ensure memory has been allocated.
+int checkAndReallocateMemory(char* ptr, size_t*allocation); // To check if we are running out of memory and need to reallocate.
+
 //Main program section
 
 /**
@@ -39,17 +40,21 @@ int main(int argc, char* argv[]) {
     int bitsLeft; // Number of bits left in the byte.
     int inputLength; // The user input length
     int tempNumber; // Used to hold an int representation of 4-bit binary group.
+    int c; // Used to store the current char from stdin.
+
 
     // Program logic 
 
     // If result is NULL it means that we could not allocate memory.
     if(assertMemoryAllocated(result)==0){
+        // Exit with exit code 2.
         return 2;
     }
 
     // Call validate input function with arguments and length
     // of arguments.
-    if(validateInput(&argc,argv,&userInput,allocation,position)==0){
+    if(validateInput(&argc,argv,&userInput,allocation,position,&c)==0){
+        // Exit with exit code 2.
         return 2;
     }
     // Clear the result string
@@ -94,9 +99,7 @@ int main(int argc, char* argv[]) {
             result=realloc(result,allocation);
         }
         // If result is null it means reallocation failed.
-        if(result==NULL) {
-            // Output error message.
-            printf("Memory reallocation failed.");
+        if(assertMemoryAllocated(result)==0) {
             // Exit with exit code 2.
             return 2;
         }
@@ -119,43 +122,48 @@ int main(int argc, char* argv[]) {
     // Print the result.
     printf("%s\n",result);
     free(result);
-
+    free(userInput);
     return 0;
 }
 
-int validateInput(int* argc,char*argv[],char** userInput, size_t allocation,int position){
-    int c; // Used to store the current char from stdin.
-
+int validateInput(int* argc,char*argv[],char** userInput, size_t allocation,int position,int*c){
     // If the number of arguments is less than 2
     if(*argc<2){
         // Since the user has not passed argument we attempt
         // to read from std input to conform to pipeline
         // requirements.
-        while((c=fgetc(stdin))!='\n' && c!=EOF) {
-
+        while((*c=fgetc(stdin))!='\n' && *c!=EOF) {
             // Check and reallocate memory if needed.
             if(checkAndReallocateMemory(*userInput,&allocation)==0){
                 return 0;
             }
-
             // Set the char value of the charInput at current position.
-            (*userInput)[position]=(char) c;
+            (*userInput)[position]=(char) *c;
             // Increment position by 1.
             position+=1;
         }
         // If we did not receive any input from stdin
         if(strlen(*userInput)==0){
             // Print the error message.
-            printf("Provide an argument, or use this program in combination with another program that outputs to stdout.\n");
+            printf("Provide an argument, or use this "\
+            "program in combination with another program that outputs to stdout.\n");
             // Return error code since we do not have any input.
             return 0;
         }
     } else {
-        // Since userInput previously had memory allocated, we
-        // need to free this to prevent a memory leak.
-        free(*userInput);
-        // There is data on argv[1] so lets set the variable
-        *userInput=argv[1];
+
+        if(strcmp("-h",argv[1])==0){
+            printf("This program converts binary numbers to hexadecimal numbers."\
+            "\nUsage: ./a.out <binary_number>\nYou can also use this program in"\
+            "combination with dec2bin: ./dec2bin 12 | ./bin2hec\n");
+            return 0;
+        } else {
+            // Since userInput previously had memory allocated, we
+            // need to free this to prevent a memory leak.
+            free(*userInput);
+            // There is data on argv[1] so lets set the variable
+            *userInput=argv[1];
+        }
     }
 
     // Loop through the entire first argument,
@@ -163,10 +171,10 @@ int validateInput(int* argc,char*argv[],char** userInput, size_t allocation,int 
     for(int i=0;i<strlen(*userInput);i++){
         // Cast the current char to its char code, 
         // but make sure to dereference first.
-        int c=(int) (*userInput)[i];
+        *c=(int) (*userInput)[i];
         // If the current char code is outside
         // of the valid bounds.
-        if(c>MAX_CHAR||c<MIN_CHAR){
+        if(*c>MAX_CHAR||*c<MIN_CHAR){
             // Print an error message.
             printf("Invalid input provided.\n");
             // Return a local status code.
@@ -180,6 +188,8 @@ int validateInput(int* argc,char*argv[],char** userInput, size_t allocation,int 
 int assertMemoryAllocated(char* ptr){
     // If result is null it means reallocation failed.
     if(ptr==NULL){
+        // Output error message.
+        printf("Memory reallocation failed.");
         // Return status code 0 (false)
         return 0;
     }
