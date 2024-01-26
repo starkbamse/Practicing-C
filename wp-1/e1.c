@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
         // Check if number is within interval before accessing array
         if(selectedSentence<=MAX_INTERVAL && selectedSentence>=MIN_INTERVAL){
             // Print the selected sentence to stdout.
-            printf("%s\n",sentences[selectedSentence-1]);
+            printf("%s\n",*(sentences+selectedSentence-1));
         }
 
         // We keep repeating this loop until the input

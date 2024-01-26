@@ -7,7 +7,12 @@
 #define MAX_GUESS 10
 #define MAX_RANDOM 100
 
-void play(int *guess,int *guesses,int *randomNumber, char* userInput,time_t*currentTime);
+// ------ Function declarations ----------
+
+// Creates a new game of the random number guessing game.
+void play(int *guess,int *guesses,int *randomNumber, char* userInput);
+
+// ------ Function declarations ----------
 
 //Main program section
 
@@ -34,21 +39,21 @@ int main(int argc,char* argv[]){
     int guess;
     //Program logic 
 
+    // Get the current system time
+    currentTime=time(NULL);
+
+    // Seed the random number generator with the current time.
+    srand(currentTime);
+
     // Call the function that contains the game
-    play(&guess,&guesses,&randomNumber,userInput,&currentTime);
+    play(&guess,&guesses,&randomNumber,userInput);
 
     // Exit the program gracefully
     return 0;
 }
 
-void play(int *guess,int *guesses,int *randomNumber, char* userInput,time_t*currentTime){
+void play(int *guess,int *guesses,int *randomNumber, char* userInput){
 
-    // Get the current system time
-    *currentTime=time(NULL);
-
-    // Seed the random number generator with the current time.
-    srand(*currentTime);
-    
     // Update the random number
     *randomNumber=rand()%MAX_RANDOM;    
 
@@ -102,8 +107,8 @@ void play(int *guess,int *guesses,int *randomNumber, char* userInput,time_t*curr
     // This will include the y or n and the \n char.
     fgets(userInput,3,stdin);
     // If the user's input is y
-    if(userInput[0]=='y'){
+    if(*(userInput)=='y'){
         // Let the function call itself and play again.
-        play(guess,guesses,randomNumber,userInput,currentTime);
+        play(guess,guesses,randomNumber,userInput);
     }
 }

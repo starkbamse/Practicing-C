@@ -11,8 +11,12 @@
 #define LOWER_END 122 // End of the lowercase alphabet ASCII code
 #define ALPHABET_LENGTH 26 // Length of the alphabet
 
-// Function that has the responsibility to shift and print the shifted characters
+// ------ Function declarations ----------
+
+// Has the responsibility to shift and print the shifted characters
 void shiftAndPrint(char* userInput,int shiftBy, int newChar, int alphabetStart, int alphabetEnd);
+
+// ------ Function declarations ----------
 
 //Main program section
 
@@ -72,7 +76,7 @@ int main(int argc,char* argv[]){
             } 
 
             // Using the address set the char
-            userInput[position] = (char) nextChar;
+            *(userInput+position) = (char) nextChar;
             // Increment the position of the index that 
             // is used for accessing the user input.
             position++;
@@ -81,7 +85,7 @@ int main(int argc,char* argv[]){
         // Shift the characters and print them
         // Convert the received char* arg to an int
         // so that we can use it to access elements in an array.
-        shiftAndPrint(userInput,atoi(argv[1]),newChar,alphabetStart,alphabetEnd);
+        shiftAndPrint(userInput,atoi(*(argv+1)),newChar,alphabetStart,alphabetEnd);
 
         // Clear the stored userInput
         memset(userInput,0,strlen(userInput));
@@ -99,7 +103,7 @@ void shiftAndPrint(char* userInput,int shiftBy, int newChar, int alphabetStart, 
 
 
     // Init new character by casting to int.
-    newChar = (int)userInput[i];
+    newChar = (int)*(userInput+i);
 
     // If the current char is within the interval of
     // the uppercase alphabet

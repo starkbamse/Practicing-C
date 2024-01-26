@@ -15,6 +15,7 @@
         "bitset": "c",
         "ratio": "c",
         "stdlib.h": "c",
-        "__locale": "c"
+        "__locale": "c",
+        "string.h": "c"
     }
 }

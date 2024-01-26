@@ -11,9 +11,17 @@
 #define BYTE_LENGTH 8 // The number of bits in a byte
 #define BASE 10 // The defined input base 
 
-int validateInput(int* argc,char*argv[],char* input,size_t allocation,int position); // Used to validate user input
-int assertMemoryAllocated(char* ptr); // To ensure memory has been allocated.
-int checkAndReallocateMemory(char* ptr, size_t*allocation); // To check if we are running out of memory and need to reallocate.
+// ------ Function declarations ----------
+
+// Used to validate user input
+int validateInput(int* argc,char*argv[],char* input,size_t allocation,int position); 
+// To ensure memory has been allocated.
+int assertMemoryAllocated(char* ptr); 
+ // To check if we are running out of memory and need to reallocate.
+int checkAndReallocateMemory(char* ptr, size_t*allocation);
+
+// ------ Function declarations ----------
+
 
 //Main program section
 
@@ -72,10 +80,10 @@ int main(int argc, char* argv[]) {
         // be 1.
         if(userInput & 1) {
             // Set the current position of result to 1
-            result[position]='1';
+            *(result+position)='1';
         } else {
             // Set the current position of result to 0
-            result[position]='0';
+            *(result+position)='0';
         }
         // Shift userInput one bit to the right.
         userInput=userInput>>1;
@@ -102,7 +110,7 @@ int main(int argc, char* argv[]) {
     // to get the correct order of the bits.
     for(int i=(conversionLength-1);i>=0;i--){
         // Print the character.
-        printf("%c",result[i]);
+        printf("%c",*(result+i));
     }
     // Finalize the string by adding a newline.
     printf("\n");
@@ -125,7 +133,7 @@ int validateInput(int* argc,char*argv[],char* input,size_t allocation,int positi
             }
 
             // Set the char value of the charInput at current position.
-            input[position]=(char) c;
+            *(input+position)=(char) c;
             // Increment position by 1.
             position+=1;
         }
@@ -138,14 +146,14 @@ int validateInput(int* argc,char*argv[],char* input,size_t allocation,int positi
             return -1;
         }
     } else {
-        if(strcmp("-h",argv[1])==0){
+        if(strcmp("-h",*(argv+1))==0){
             printf("This program converts decimal numbers to binary numbers.\n"\
             "Usage: ./a.out <decimal number>\nYou can also use this program in"\
             "combination with bin2hec: ./dec2bin 12 | ./bin2hec\n");
             return -1;
         } else {
             // There is data on argv[1] so lets set the variable
-            input=argv[1];
+            input=*(argv+1);
         }
 
     }
@@ -154,7 +162,7 @@ int validateInput(int* argc,char*argv[],char* input,size_t allocation,int positi
     // char by char.
     for(int i=0;i<strlen(input);i++){
         // Cast the current char to its char code.
-        int c=(int) input[i];
+        int c=(int) *(input+i);
         // If the current char code is outside
         // of the valid bounds.
         if(c>MAX_CHAR||c<MIN_CHAR){

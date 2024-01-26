@@ -10,10 +10,16 @@
 #define BYTE_LENGTH 8 // The number of bits in a byte
 #define BASE 10 // The defined input base 
 
+// ------ Function declarations ----------
 
-int validateInput(int* argc,char*argv[],char** userInput,size_t allocation,int position,int*c); // To validate user input
-int assertMemoryAllocated(char* ptr); // To ensure memory has been allocated.
-int checkAndReallocateMemory(char* ptr, size_t*allocation); // To check if we are running out of memory and need to reallocate.
+// To validate user input
+int validateInput(int* argc,char*argv[],char** userInput,size_t allocation,int position,int*c); 
+ // To ensure memory has been allocated.
+int assertMemoryAllocated(char* ptr);
+// To check if we are running out of memory and need to reallocate.
+int checkAndReallocateMemory(char* ptr, size_t*allocation); 
+
+// ------ Function declarations ----------
 
 //Main program section
 
@@ -78,7 +84,7 @@ int main(int argc, char* argv[]) {
                 // If the current char in the group is a 1
                 // We do i+x because i is the group and
                 // x is the position within the group.
-                if(userInput[i+x]=='1'){
+                if(*(userInput+i+x)=='1'){
                     // Perform OR operation on the number.
                     // This will set LSB to 1 if it is not already
                     // Similar to false | true which will evaluate to true
@@ -108,13 +114,13 @@ int main(int argc, char* argv[]) {
             // Since hex and dec are equal up to the number 10
             // we can just take the char 0 and increment the
             // number to the char to get the wanted char.
-            result[position]='0'+tempNumber;
+            *(result+position)='0'+tempNumber;
         } else {
             // If its bigger or equal to 10
             // we can subtract 15-the number to get the
             // number of chars that we need to subtract
             // from the maximum hex number which is F.
-            result[position]=('F'-(15-tempNumber));
+            *(result+position)=('F'-(15-tempNumber));
         }
         // Increment the position in the resulting string.
         position++;
@@ -138,7 +144,7 @@ int validateInput(int* argc,char*argv[],char** userInput, size_t allocation,int 
                 return 0;
             }
             // Set the char value of the charInput at current position.
-            (*userInput)[position]=(char) *c;
+            *((*userInput)+position)=(char) *c;
             // Increment position by 1.
             position+=1;
         }
@@ -152,7 +158,7 @@ int validateInput(int* argc,char*argv[],char** userInput, size_t allocation,int 
         }
     } else {
 
-        if(strcmp("-h",argv[1])==0){
+        if(strcmp("-h",*(argv+1))==0){
             printf("This program converts binary numbers to hexadecimal numbers."\
             "\nUsage: ./a.out <binary_number>\nYou can also use this program in"\
             "combination with dec2bin: ./dec2bin 12 | ./bin2hec\n");
@@ -162,7 +168,7 @@ int validateInput(int* argc,char*argv[],char** userInput, size_t allocation,int 
             // need to free this to prevent a memory leak.
             free(*userInput);
             // There is data on argv[1] so lets set the variable
-            *userInput=argv[1];
+            *userInput=*(argv+1);
         }
     }
 
@@ -171,7 +177,7 @@ int validateInput(int* argc,char*argv[],char** userInput, size_t allocation,int 
     for(int i=0;i<strlen(*userInput);i++){
         // Cast the current char to its char code, 
         // but make sure to dereference first.
-        *c=(int) (*userInput)[i];
+        *c=(int) *((*userInput)+i);
         // If the current char code is outside
         // of the valid bounds.
         if(*c>MAX_CHAR||*c<MIN_CHAR){
