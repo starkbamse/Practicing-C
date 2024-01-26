@@ -77,7 +77,7 @@ void printEncryptedStr(int shiftValue) {
         encryptedStr = (char*)calloc(encryptedStrSize, sizeof(char)); // allocating 50 char (50n * 1 byte) of memory to the string
         counter = 0; // initialising the counter with 0 every time we want to read a new str printed by the user
 
-        // check if memory is allocated. If not exit with status code 1.
+        // check if memory is allocated. If not exit with status code 0.
         if (encryptedStr == NULL) {
             printf("Memory allocation failed.\n");
             exit(0);
@@ -90,9 +90,11 @@ void printEncryptedStr(int shiftValue) {
         while (enteredChar != '\n') {
             // if the counter is getting close to the end of the memory allocated
             // use realloc to increase the size of the pointer
-            if ((encryptedStrSize - counter) > encryptedStrSize) {
-                encryptedStr = realloc(encryptedStr, (encryptedStrSize + 10) * sizeof(char));
-                // check if memory is allocated. If not exit with status code 1.
+            if ((encryptedStrSize - counter) < encryptedStrSize) {
+                // increase the size variable by 10
+                encryptedStrSize = encryptedStrSize + 10;
+                encryptedStr = realloc(encryptedStr, encryptedStrSize * sizeof(char));
+                // check if memory is allocated. If not exit with status code 0.
                 if (encryptedStr == NULL) {
                     printf("Memory allocation failed.\n");
                     exit(0);
@@ -115,8 +117,8 @@ void printEncryptedStr(int shiftValue) {
         // if counter is 0, it means that the user just pressed enter
         // so nothing should be printed
         if (counter != 0) {
-            // insert the end of a string char \0 at the index after counter
-            encryptedStr[counter + 1] = '\0';
+            // insert the end of a string char \0 at the index after the last index that holds a char
+            encryptedStr[counter] = '\0';
             // print the encrypted str
             printf("%s\n", encryptedStr);
         }
