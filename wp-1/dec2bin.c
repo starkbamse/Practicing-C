@@ -11,7 +11,9 @@
 #define BYTE_LENGTH 8 // The number of bits in a byte
 #define BASE 10 // The defined input base 
 
-int validateInput(int* argc,char*argv[],char* charInput,int* tempChar,size_t allocation,int *position); // Used to validate user input
+int validateInput(int* argc,char*argv[],char* input,size_t allocation,int position); // Used to validate user input
+int assertMemoryAllocated(char* ptr);
+int checkAndReallocateMemory(char* ptr, size_t*allocation);
 
 //Main program section
 
@@ -32,29 +34,25 @@ int main(int argc, char* argv[]) {
 
     // Variable declarations
     size_t allocation=INITIAL_MEMORY_ALLOCATION; //Init alloc for conv. result
-    char* result = malloc(INITIAL_MEMORY_ALLOCATION); // Alloc mem for conv. result
-    char* charInput = malloc(INITIAL_MEMORY_ALLOCATION); // Users char input
+    char* result = malloc(INITIAL_MEMORY_ALLOCATION); // Alloc mem for conv. result and char input
     long userInput; // Users input converted to long
-    int position=0; // Cursor or position in the conversion result.
-    int readStdinPosition=0; // Cursor or position for the standard input reading
-    int inputOk; // Is input valid or not
+    int position=0; // Cursor or position used for traversing a string.
     int bitsLeft; // Number of bits left in the byte.
-    int conversionLength; // The resulting length of the conversion
-    int tempChar; // ASCII code of the received input from stdin.
+    int conversionLength; // The resulting length of the converted binary value
 
     // Program logic 
 
-    // If result is NULL it means that we could not allocate memory.
-    if(result==NULL) {
-        // Print the error
-        printf("Memory allocation failed.");
-        // Exit with exit code 1 signalling that there was a problem.
-        return 1;
+    // If the memory allocation failed, exit with code 2.
+    if(assertMemoryAllocated(result)==0){
+        return 2;
     }
 
     // Call validate input function with arguments and length
     // of arguments.
-    userInput=validateInput(&argc,argv,charInput,&tempChar,allocation,&readStdinPosition);
+    userInput=validateInput(&argc,argv,result,allocation,position);
+    
+    // Clear the result string
+    memset(result,0,strlen(result));
 
     // If the input is valid we will not get a -1. 
     // If the input is invalid we return a 2
@@ -62,19 +60,9 @@ int main(int argc, char* argv[]) {
 
     // While the users input is not 0
     while (userInput!=0){
-        // We check if one addition to the string literal
-        // will overrun the allocated memory.
-        if((strlen(result)+1)>allocation){
-            // Increase the allocation by 2.
-            allocation*=2;
-            // Attempt to reallocate memory.
-            result=realloc(result,allocation);
-        }
-        // If result is null it means reallocation failed.
-        if(result==NULL) {
-            // Output error message.
-            printf("Memory reallocation failed.");
-            // Exit with exit code 2.
+        
+        // Check and reallocate memory if needed.
+        if(checkAndReallocateMemory(result,&allocation)==0){
             return 2;
         }
 
@@ -118,52 +106,46 @@ int main(int argc, char* argv[]) {
     }
     // Finalize the string by adding a newline.
     printf("\n");
-    free(charInput);
     free(result);
 }
 
-int validateInput(int* argc,char*argv[],char* charInput,int* tempChar,size_t allocation,int*position){
+int validateInput(int* argc,char*argv[],char* input,size_t allocation,int position){
+    int c; // Used to store the current char from stdin.
+    
     // If the number of arguments is less than 2
     if(*argc<2){
         // Since the user has not passed argument we attempt
         // to read from std input to conform to pipeline
         // requirements.
-        while((*tempChar=fgetc(stdin))!='\n' && *tempChar!=EOF) {
-            // If the addition of one char to the charInput overruns allocation
-            // attempt to increase the allocation
-            if(strlen(charInput)+1>allocation){
-                // Increment the allocation by 2
-                allocation*=2;
-                // Update the charInputs allocation of memory.
-                charInput=realloc(charInput,allocation);
-                // If the allocation failed
-                if(charInput==NULL) {
-                    // Return error code to the main function.
-                    return -1;
-                }
+        while((c=fgetc(stdin))!='\n' && c!=EOF) {
+
+            // Check and reallocate memory if needed.
+            if(checkAndReallocateMemory(input,&allocation)==0){
+                return -1;
             }
+
             // Set the char value of the charInput at current position.
-            charInput[*position]=(char) *tempChar;
+            input[position]=(char) c;
             // Increment position by 1.
-            *position+=1;
+            position+=1;
         }
         // If we did not receive any input from stdin
-        if(strlen(charInput)==0){
+        if(strlen(input)==0){
             // Print the error message.
-        printf("Provide an argument, or use this program in combination with another program that outputs to stdout.\n");
+            printf("Provide an argument, or use this program in combination with another program that outputs to stdout.\n");
             // Return error code since we do not have any input.
             return -1;
         }
     } else {
         // There is data on argv[1] so lets set the variable
-        charInput=argv[1];
+        input=argv[1];
     }
 
     // Loop through the entire first argument,
     // char by char.
-    for(int i=0;i<strlen(charInput);i++){
+    for(int i=0;i<strlen(input);i++){
         // Cast the current char to its char code.
-        int c=(int) charInput[i];
+        int c=(int) input[i];
         // If the current char code is outside
         // of the valid bounds.
         if(c>MAX_CHAR||c<MIN_CHAR){
@@ -177,7 +159,29 @@ int validateInput(int* argc,char*argv[],char* charInput,int* tempChar,size_t all
     // Convert the argument to a long and return it
     // We have already performed validation so
     // We pass NULL to the end_ptr and set base 10.
-    return strtol(charInput,NULL,BASE);
+    return strtol(input,NULL,BASE);
 
 }
 
+int assertMemoryAllocated(char* ptr){
+    // If result is null it means reallocation failed.
+    if(ptr==NULL){
+        // Return status code 0 (false)
+        return 0;
+    }
+    // Return status code 1 (true)
+    return 1;
+}
+
+int checkAndReallocateMemory(char* ptr, size_t *allocation){
+    // If the increase by 1 in the string size overruns allocation
+    if(strlen(ptr)+1>*allocation){
+        // Increment the allocation by 2
+        *allocation*=2;
+        // Update the charInputs allocation of memory.
+        ptr=realloc(ptr,*allocation);
+        // If the allocation failed
+        return assertMemoryAllocated(ptr);
+    }
+    return 1;
+}

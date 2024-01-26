@@ -35,7 +35,7 @@ int main(int argc,char* argv[]){
     
     // Variable declarations
     size_t allocation = INITIAL_MEMORY_ALLOCATION; // Init alloc size of user input
-    char* userInput = malloc(allocation); // Pointer to first char in string literal in heap
+    char* userInput = malloc(allocation); // Pointer to first char in string in heap
     int position; // Position of the next char in user's input
     int nextChar; // ASCII char code of the received input.
     int shiftBy; // N characters to shift letters with.

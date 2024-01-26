@@ -11,8 +11,9 @@
 #define BASE 10 // The defined input base 
 
 
-int validateInput(int* argc,char*argv[]); // Used to validate user input
-
+int validateInput(int* argc,char*argv[],char** userInput,size_t allocation,int position); // Used to validate user input
+int assertMemoryAllocated(char* ptr);
+int checkAndReallocateMemory(char* ptr, size_t*allocation);
 //Main program section
 
 /**
@@ -33,35 +34,26 @@ int main(int argc, char* argv[]) {
     // Variable declarations
     size_t allocation=INITIAL_MEMORY_ALLOCATION; //Init alloc for conv. result
     char* result = malloc(INITIAL_MEMORY_ALLOCATION); // Alloc mem for conv. result
-    char* userInput; // Users input converted to long
+    char* userInput = malloc(INITIAL_MEMORY_ALLOCATION); // Users input converted to long
     int position=0; // Cursor or position in the conversion result.
-    int inputOk; // Is input valid or not
     int bitsLeft; // Number of bits left in the byte.
     int inputLength; // The user input length
-    int tempNumber;
+    int tempNumber; // Used to hold an int representation of 4-bit binary group.
 
     // Program logic 
 
     // If result is NULL it means that we could not allocate memory.
-    if(result==NULL) {
-        // Print the error
-        printf("Memory allocation failed.");
-        // Exit with exit code 1 signalling that there was a problem.
+    if(assertMemoryAllocated(result)==0){
         return 2;
     }
 
     // Call validate input function with arguments and length
     // of arguments.
-    inputOk=validateInput(&argc,argv);
-
-    // If the input is valid we will get a 1. 
-    // If the input is invalid we return a 2
-    if ( inputOk==1 ) { return 2; }
-
-    // Convert the argument to a long
-    // We have already performed validation so
-    // We pass NULL to the end_ptr and set base 10.
-    userInput=argv[1];
+    if(validateInput(&argc,argv,&userInput,allocation,position)==0){
+        return 2;
+    }
+    // Clear the result string
+    memset(result,0,strlen(result));
 
     // Setting input length to be the length of user input
     inputLength=strlen(userInput);
@@ -121,7 +113,7 @@ int main(int argc, char* argv[]) {
             // from the maximum hex number which is F.
             result[position]=('F'-(15-tempNumber));
         }
-        // Increment the position in the resulting string literal.
+        // Increment the position in the resulting string.
         position++;
     }
     // Print the result.
@@ -131,31 +123,79 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
-int validateInput(int* argc,char*argv[]){
+int validateInput(int* argc,char*argv[],char** userInput, size_t allocation,int position){
+    int c; // Used to store the current char from stdin.
+
     // If the number of arguments is less than 2
     if(*argc<2){
-        // Print the error message.
-        printf("Provide an argument.\n");
-        // Return a local status code.
-        return 1;
+        // Since the user has not passed argument we attempt
+        // to read from std input to conform to pipeline
+        // requirements.
+        while((c=fgetc(stdin))!='\n' && c!=EOF) {
+
+            // Check and reallocate memory if needed.
+            if(checkAndReallocateMemory(*userInput,&allocation)==0){
+                return 0;
+            }
+
+            // Set the char value of the charInput at current position.
+            (*userInput)[position]=(char) c;
+            // Increment position by 1.
+            position+=1;
+        }
+        // If we did not receive any input from stdin
+        if(strlen(*userInput)==0){
+            // Print the error message.
+            printf("Provide an argument, or use this program in combination with another program that outputs to stdout.\n");
+            // Return error code since we do not have any input.
+            return 0;
+        }
+    } else {
+        // Since userInput previously had memory allocated, we
+        // need to free this to prevent a memory leak.
+        free(*userInput);
+        // There is data on argv[1] so lets set the variable
+        *userInput=argv[1];
     }
 
     // Loop through the entire first argument,
     // char by char.
-    for(int i=0;i<strlen(argv[1]);i++){
-        // Cast the current char to its char code.
-        int c=(int) argv[1][i];
+    for(int i=0;i<strlen(*userInput);i++){
+        // Cast the current char to its char code, 
+        // but make sure to dereference first.
+        int c=(int) (*userInput)[i];
         // If the current char code is outside
         // of the valid bounds.
         if(c>MAX_CHAR||c<MIN_CHAR){
             // Print an error message.
             printf("Invalid input provided.\n");
             // Return a local status code.
-            return 1;
+            return 0;
         }
     }
-
-    // Return local status code.
-    return 0;
+    return 1;
 }
 
+
+int assertMemoryAllocated(char* ptr){
+    // If result is null it means reallocation failed.
+    if(ptr==NULL){
+        // Return status code 0 (false)
+        return 0;
+    }
+    // Return status code 1 (true)
+    return 1;
+}
+
+int checkAndReallocateMemory(char* ptr, size_t *allocation){
+    // If the increase by 1 in the string size overruns allocation
+    if(strlen(ptr)+1>*allocation){
+        // Increment the allocation by 2
+        *allocation*=2;
+        // Update the charInputs allocation of memory.
+        ptr=realloc(ptr,*allocation);
+        // If the allocation failed
+        return assertMemoryAllocated(ptr);
+    }
+    return 1;
+}
