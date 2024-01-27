@@ -40,6 +40,7 @@ long decimalNumber,     // Inputted number by the user
 i,                      // Index of the loop
 binaryArray[64] = {0};  // Array to store the binary number
 long max = LONG_MAX;    // Maximum long in c
+int counter;            // The number of digits
 
 // Convert the inserted decimal number into a long.
 decimalNumber = atol(argv[1]);
@@ -72,46 +73,43 @@ else if (isDecimalNumber(argv[1]) == 0) {
 } 
 
 // If the input is correct, continue.
-
 // For loop to get the binary representation of the decimal number
     for (i = 0; decimalNumber > 0; i++)    {    
         // Store the remainder of decimal number divided by 2 (through a % modulus operation) in the binary array.
         binaryArray[i] = decimalNumber % 2;    
         // Divide the decimal number by two.
-        decimalNumber = decimalNumber/2;    
+        decimalNumber = decimalNumber/2;  
+        // Increment the counter for number of bits 
+        counter ++; 
     } 
 
-// Modify this to not be magic numbers so alex is happy :(
-    
-    // Check if the inputted number is 256 or greater (that is when the 16 bit numbers start).
-    if (atoi(argv[1]) >= 256) { 
-        // Then print all 16 bits of the binary number.     
+    // If there are more than 32 bits, print it as a 64 bit binary number
+    if (counter > 32) {
+        // Print the 64 bits in reverse order.
+        for(int i = 63; i >= 0; i--)    {    
+            printf("%ld", binaryArray[i]); 
+        } 
+    // If there are more than 16 bits, print it as a 32 bit binary number
+    } else if (counter > 16){
+         // Print the last 32 bits in reverse order.
+        for(int i = 31; i >= 0; i--)    {    
+            printf("%ld", binaryArray[i]); 
+        } 
+    // If there are more than 8 bits, print it as a 32 bit binary number
+    } else if (counter > 8){
+         // Print the last 16 bits in reverse order.
         for(int i = 15; i >= 0; i--)    {    
             printf("%ld", binaryArray[i]); 
         } 
     } 
-        // Check if the inputted number is 65535 or greater (that is when the 32 bit numbers start).
-    if (atoi(argv[1]) >= 65536) { 
-        // Then print all 32 bits of the binary number.     
-        for(int i = 31; i >= 0; i--)    {    
-            printf("%ld", binaryArray[i]); 
-        } 
-    } 
-     // Check if the inputted number is 65535 or greater (that is when the 64 bit numbers start).
-    if (atol(argv[1]) >= 4294967296) { 
-        // Then print all 64 bits of the binary number.     
-        for(int i = 63; i >= 0; i--)    {    
-            printf("%ld", binaryArray[i]); 
-        } 
-    } 
-
-    // If the inputted number is less that 256, then it is 8 bit.
-    else { 
-        // Print only the last 8 bits of the array.
-        for(i = 7; i >= 0; i--) { 
+    // If it is a less up to 8 bits, print it as a 8 bit binary number.
+    else {
+      // Print the last 8 bits in reverse order.
+      for(i = 7; i >= 0; i--) { 
             printf("%ld", binaryArray[i]); 
         }
     }
+    
     // New line and return success code.
     printf("\n");
     return 0;
