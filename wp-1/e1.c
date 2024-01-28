@@ -1,24 +1,3 @@
-//Include section
-#include <stdio.h>
-
-//Define section
-#define MIN_INTERVAL 1 // Minimum sentence id
-#define MAX_INTERVAL 5 // Maximum sentence id
-
-//Main program section
-
-/**
-* This program reads an integer between 1 and 5 and
-* prints out one of 5 previously defined sentences.
-* 
-* Purpose: To showcase how conditionals are used in C.
-* DIT632
-* 
-* Author: Kaisa Arumeel, Omid Khodaparast, Alexander Säfström
-*
-**/
-
-
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
 // Work package 1
 // Exercise 1
@@ -27,80 +6,45 @@
 // Include section
 #include <stdio.h>
 
-// function declarations
-void printSentences(int number);
-int readInteger(char *prompt);
-void validateProgFinish(void);
+// Main function in the program
 
-// the main function (where the program starts)
-int main(int argc, char *argv[]) {
-
-    // validate the end of the program
-    validateProgFinish();
-
-    // upon successfull execution, return 0
-    return 0;
-}
-
-/**
- * This function prints sentences based on the integer passed to it. If the integer is between and including
- * 1 and 5 sentences corresponding sentences are printed. Otherwise, nothing is printed.
- * @param numb integer passed to the function whihc determines which sentence is to be printed.
+/*
+* Purpose: This program reads an integer number between 1 and 5 and prints out a sentence for 
+* each of the options. 
+* The program continues to ask for a new number and exits if number isn ́t in the interval 1 to 5.
+*
 */
-void printSentences(int number) {
-    // using a switch-case construct, based on the number argument passed to the function
-    // corresponding sentences are printed that showcase what the user typed.
-    // if the the user does not print any number between and including 1 and 5, nothing is printed.
-    switch (number) {
-        case 1:
-            printf("This sentence is printed because you entered number 1.\n");
-            break;
-        case 2:
-            printf("This sentence is printed because you entered number 2.\n");
-            break;
-        case 3:
-            printf("This sentence is printed because you entered number 3.\n");
-            break;
-        case 4:
-            printf("This sentence is printed because you entered number 4.\n");
-            break;
-        case 5:
-            printf("This sentence is printed because you entered number 5.\n");
-            break;
-    }
-}
+int main() {
 
-/**
- * This function reads an integer entered by the user and returns it to its caller.
- * @param prompt This is a string that is passed to the method and is used as a prompt for the user
- * @returns The integer entered by the user.
-*/
-int readInteger(char *prompt) {
-    int inputNum; // the number entered by the user will be saved in this variable
-    // the fucntion gets a string as a argument which is a prompt to the user.
-    // this printf prints the prompt on the console.
-    printf("%s: ", prompt);
-    // read the number entered by the user
-    scanf("%d", &inputNum);
-    // return it to the caller
-    return inputNum;
-}
+    // Variable declarations
+    int input; // Integer inputted by the user
 
-/**
- * This method prompts the user to keep entering a umber until
- * they enter a number that is not between and including 1 and 5.
- * In that case, the programe finishes.
-*/
-void validateProgFinish(void) {
-    int inputNum; // variable to save integer input entered by the user
-    // call readInteger to read the integer entered by the user
-    inputNum = readInteger("Please enter a number between (including) 1 and 5");
-    // While loop to keep asing the user to enter a number until they
-    // enter a number that is not between and including 1 and 5
-    while (inputNum >= 1 && inputNum <= 5) {
-        // Print a sentence based on the integer entered by the user
-        printSentences(inputNum);
-        // prompt the user to enter another integer
-        inputNum = readInteger("Please enter a number between (including) 1 and 5");
-    }
+    do
+    {
+        printf("Please input a number from 1 to 5: ");
+        //Scan the input from the user
+        scanf("%d", &input);
+        // Case for input 1
+        if(input == 1){
+            printf("Input is 1.");
+        }
+        // Case for input 2
+        else if(input == 2){
+            printf("Input is 2");
+        }
+        // Case for input 3
+        else if(input == 3){
+            printf("Input is 3");
+        }
+        // Case for input 4
+        else if(input == 4){
+            printf("Input is 4");
+        }
+        // Case for input 5
+        else if(input == 5){
+            printf("Input is 5");
+        }
+    // Prompt the user with the sentence until the input is between 1 and 5.
+    } while (input > 0 && input < 6);
+
 }
