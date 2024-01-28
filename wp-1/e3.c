@@ -191,7 +191,7 @@ char *readInputStr(void) {
     // use calloc to give the pointer 10 bytes of memory
     userInput = (char*)calloc(inputPointerSize, sizeof(char));
 
-    // initialising the counter with 0 every time we want to read a new str printed by the user
+    // check that memory is correctly allocated
     if (userInput == NULL) {
         printf("Memory allocation failed.\n");
         exit(0);
