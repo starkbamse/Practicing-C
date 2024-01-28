@@ -28,69 +28,61 @@ void draw_histogram(int *freq);
 // ---------- main ------------------
 // The main entry point for the program
 int main (void) {
-    int table[MAX]; // construct an array with size MAX
-    int frequency[MAXNUMBER + 1]; // construct an array with size MAXNUMBER + 1 (from 0 (including) to MAXNUMBER (including))
-    
+    int table[MAX]; // Construct an array of size MAX
+    int frequency[MAXNUMBER + 1]; // Construct an array of size MAXNUMBER + 1 (from 0 (including) to MAXNUMBER (including))
+    // Set values of array to 0.
     memset(frequency,0,sizeof(frequency));
 
-    create_random(table);
-    count_frequency(table, frequency);
+    create_random(table); 
+    count_frequency(table, frequency);  
     draw_histogram(frequency);
 
-    // rtuen 0 upon program finish
+    // Return 0 upon program finish
     return 0;
 }
 
 void create_random(int *tab) {
-    int randNum;  // variable to hold random number between 1 and 100 (included)
+    int randNum;  // Variable to hold random number between 1 and 100 (included)
 
-    // seed the randomiser
+    // Seed the randomiser
     srand(time(0));
 
-    // now that we have the size we can assign random numbers
+    // Loop through the table.
     for (int i = 0; i < MAX; i++) {
-        // get modulo of MAXNUMBER and add 1 to get a numb between 0 and MAXNUMBER
+        // Get modulo of MAXNUMBER+1 to get a number between 0 and MAXNUMBER
         randNum = (rand() % (MAXNUMBER + 1));
-        // set undex i value to randNum
+        // Set index i value to randNum
         tab[i] = randNum;
-        // printf("tab[%d] = %d\n", i, randNum);
     }
 }
 
 void count_frequency(int *tab, int *freq) {
-    int randNum; // this variable holds the random number whihc will be used to find the index in freq
+    int randNum; // This variable holds the random number which will be used to find the index in freq
 
-
-
-
-    // go through the random number array and count the frequency of each number
+    // Go through the random number array and count the frequency of each number
     for (int i = 0; i < MAX; i++) {
-        // get the numb at index i
+        // Get the number at index i
         randNum = tab[i];
-        // for this number between 0 and MAXNUMBER add 1 to what it was before
+        // For this number, increment by 1
         freq[randNum]++;
     }
 }
 
 void draw_histogram(int *freq) {
-    int freqPerNum; // this variable holds frequency per number
-
-    // go t through the array. If the freq is not 0 draw
+    // Go through the array.
     for (int i = 0; i <= MAXNUMBER; i++) {
-        // if freq is 0, do not draw and continue to the next iteration
-        // printf("freq[%d] = %d\n", i, freq[i]);
+        // If freq[i] is 0, do not draw and continue to the next iteration
         if (freq[i] == 0) continue;
-        // set freq for the current index
-        freqPerNum = freq[i];
-        // print the num taking into consideration that it can need two spaces on the terminal
+
+        // Print the num taking into consideration that it can need two spaces on the terminal
         printf("%2d   ", i);
 
-        // print x corresponding to the frequency of the current number
-        for (int j = 1; j <= freqPerNum; j++) {
+        // Print x corresponding to the frequency of the current number
+        for (int j = 1; j <= freq[i]; j++) {
             printf("x");
         }
 
-        // go to the next line
+        // Go to the next line
         printf("\n");
     }
 }

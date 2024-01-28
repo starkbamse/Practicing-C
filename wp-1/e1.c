@@ -14,6 +14,7 @@
 * The program continues to ask for a new number and exits if number isn ́t in the interval 1 to 5.
 *
 */
+
 int main() {
 
     // Variable declarations
@@ -44,6 +45,7 @@ int main() {
         else if(input == 5){
             printf("Input is 5\n");
         }
+        
     // Prompt the user with the sentence until the input is between 1 and 5.
     } while (input > 0 && input < 6);
 

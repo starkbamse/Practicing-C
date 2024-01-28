@@ -1,3 +1,8 @@
+// (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
+// Work package 1
+// Exercise 4.1
+// Submission code: xxxxxx (provided by your TA-s)
+
 //Include section
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +39,6 @@ int checkAndReallocateMemory(char* ptr, size_t*allocation);
 * very fast.
 * DIT632
 * 
-* Author: Kaisa Arumeel, Omid Khodaparast, Alexander Säfström
 * 
 **/
 
@@ -71,6 +75,7 @@ int main(int argc, char* argv[]) {
         
         // Check and reallocate memory if needed.
         if(checkAndReallocateMemory(result,&allocation)==0){
+            // Return 2 if conversion failed (memory allocation failed.)
             return 2;
         }
 
@@ -110,7 +115,7 @@ int main(int argc, char* argv[]) {
     // to get the correct order of the bits.
     for(int i=(conversionLength-1);i>=0;i--){
         // Print the character.
-        printf("%c",*(result+i));
+        printf("%c",*(result+i)); 
     }
     // Finalize the string by adding a newline.
     printf("\n");

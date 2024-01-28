@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 // Initalise the random generation of numbers so that it does not return the same number every execution 
 srand ( time(NULL) );
 //Create a random number from between 1 and 100 (included).
-int randomNumber =  rand() %100 + 1;
+int randomNumber =  rand() % 100 + 1;
 
 // Variable declarations
 int input,           // User input

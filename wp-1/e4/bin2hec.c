@@ -1,3 +1,8 @@
+// (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
+// Work package 1
+// Exercise 4.2
+// Submission code: xxxxxx (provided by your TA-s)
+
 //Include section
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,7 +36,6 @@ int checkAndReallocateMemory(char* ptr, size_t*allocation);
 * very fast.
 * DIT632
 * 
-* Author: Kaisa Arumeel, Omid Khodaparast, Alexander Säfström
 * 
 **/
 
@@ -72,30 +76,22 @@ int main(int argc, char* argv[]) {
     // of 4 or the length of a byte/2.
     // Note: A hex number represents 4 bits.
     for(int i=0;i<inputLength;i+=(BYTE_LENGTH/2)){
-        tempNumber=0;
+        tempNumber=0; // Set number to 0.
         // We also need to look at each character 
         // within the group
         for(int x=0;x<(BYTE_LENGTH/2);x++){
-            // If x+i (entire pos.) is still smaller than the length of the input.
-            if( (x+i) < inputLength){
-                // Since we have entered this part of the loop,
-                // we must shift the bits to make space for the new bit.
-                tempNumber = tempNumber << 1;
-                // If the current char in the group is a 1
-                // We do i+x because i is the group and
-                // x is the position within the group.
-                if(*(userInput+i+x)=='1'){
-                    // Perform OR operation on the number.
-                    // This will set LSB to 1 if it is not already
-                    // Similar to false | true which will evaluate to true
-                    tempNumber = tempNumber | 1;
-                }
-    
-            } else {
-                // If we cannot access any more data, we can exit loop.
-                break;
+            // Since we have entered this part of the loop,
+            // we must shift the bits to make space for the new bit.
+            tempNumber = tempNumber << 1;
+            // If the current char in the group is a 1
+            // We do i+x because i is the group and
+            // x is the position within the group.
+            if(*(userInput+i+x)=='1'){
+                // Perform OR operation on the number.
+                // This will set LSB to 1 if it is not already
+                // Similar to false | true which will evaluate to true
+                tempNumber = tempNumber | 1;
             }
-
         }
         // If increasing the length of result will overrun the allocated memory.
         if((strlen(result)+1)>allocation){
@@ -128,7 +124,10 @@ int main(int argc, char* argv[]) {
     // Print the result.
     printf("%s\n",result);
     free(result); // Free occupied heap memory.
-    free(userInput); // Free occupied heap memory.
+    // If the user did not provide an argument
+    if(argc<2){
+        free(userInput); // Free occupied heap memory.
+    }
     return 0; // Exit gracefully
 }
 

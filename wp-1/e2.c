@@ -19,7 +19,7 @@
 // ------ Function declarations ----------
 
 // Has the responsibility to shift and print the shifted characters
-void shiftAndPrint(char* userInput,int shiftBy, int newChar, int alphabetStart, int alphabetEnd);
+void shiftAndPrint(char* userInput,int shiftBy, int newChar);
 
 // ------ Function declarations ----------
 
@@ -48,8 +48,6 @@ int main(int argc,char* argv[]){
     int nextChar; // ASCII char code of the received input.
     int shiftBy; // N characters to shift letters with.
     int newChar; // Temp variable for new character
-    int alphabetStart; // Start of the alphabet
-    int alphabetEnd; // End of the alphabet
 
     // Program logic
 
@@ -89,7 +87,7 @@ int main(int argc,char* argv[]){
         // Shift the characters and print them
         // Convert the received char* arg to an int
         // so that we can use it to access elements in an array.
-        shiftAndPrint(userInput,atoi(*(argv+1)),newChar,alphabetStart,alphabetEnd);
+        shiftAndPrint(userInput,atoi(*(argv+1)),newChar);
 
         // Clear the stored userInput
         memset(userInput,0,strlen(userInput));
@@ -102,7 +100,9 @@ int main(int argc,char* argv[]){
     return 0;
 }
 
-void shiftAndPrint(char* userInput,int shiftBy, int newChar, int alphabetStart, int alphabetEnd){
+void shiftAndPrint(char* userInput,int shiftBy, int newChar){
+    int alphabetStart; // Start of the alphabet
+    int alphabetEnd; // End of the alphabet
     for(int i=0;i<strlen(userInput);i++){
         // Init new character by casting to int.
         newChar = (int)*(userInput+i);
