@@ -36,7 +36,7 @@ int main(int argc,char* argv[]){
     int randomNumber; // A random number between 1 and 100.
     int guesses; // Number of guesses
     char userInput[MAX_RANDOM]; // The user's input limited by the upper limit (100)
-    int guess;
+    int guess; // User's current guess.
     //Program logic 
 
     // Get the current system time

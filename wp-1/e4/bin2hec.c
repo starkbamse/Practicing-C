@@ -127,9 +127,9 @@ int main(int argc, char* argv[]) {
     }
     // Print the result.
     printf("%s\n",result);
-    free(result);
-    free(userInput);
-    return 0;
+    free(result); // Free occupied heap memory.
+    free(userInput); // Free occupied heap memory.
+    return 0; // Exit gracefully
 }
 
 int validateInput(int* argc,char*argv[],char** userInput, size_t allocation,int position,int*c){
@@ -141,6 +141,7 @@ int validateInput(int* argc,char*argv[],char** userInput, size_t allocation,int 
         while((*c=fgetc(stdin))!='\n' && *c!=EOF) {
             // Check and reallocate memory if needed.
             if(checkAndReallocateMemory(*userInput,&allocation)==0){
+                // Return error code since allocation failed.
                 return 0;
             }
             // Set the char value of the charInput at current position.
@@ -157,11 +158,13 @@ int validateInput(int* argc,char*argv[],char** userInput, size_t allocation,int 
             return 0;
         }
     } else {
-
+        // If -h argument is provided
         if(strcmp("-h",*(argv+1))==0){
+            // Print help message
             printf("This program converts binary numbers to hexadecimal numbers."\
             "\nUsage: ./a.out <binary_number>\nYou can also use this program in"\
             "combination with dec2bin: ./dec2bin 12 | ./bin2hec\n");
+            // Return error code to break execution.
             return 0;
         } else {
             // Since userInput previously had memory allocated, we
@@ -187,6 +190,7 @@ int validateInput(int* argc,char*argv[],char** userInput, size_t allocation,int 
             return 0;
         }
     }
+    // Return success status code.
     return 1;
 }
 
@@ -209,8 +213,9 @@ int checkAndReallocateMemory(char* ptr, size_t *allocation){
         *allocation*=2;
         // Update the charInputs allocation of memory.
         ptr=realloc(ptr,*allocation);
-        // If the allocation failed
+        // If the allocation failed it will return an error.
         return assertMemoryAllocated(ptr);
     }
+    // Return success status code.
     return 1;
 }

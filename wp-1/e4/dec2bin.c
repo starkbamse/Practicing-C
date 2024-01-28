@@ -114,7 +114,7 @@ int main(int argc, char* argv[]) {
     }
     // Finalize the string by adding a newline.
     printf("\n");
-    free(result);
+    free(result); // Free occupied heap memory.
 }
 
 int validateInput(int* argc,char*argv[],char* input,size_t allocation,int position){
@@ -129,6 +129,7 @@ int validateInput(int* argc,char*argv[],char* input,size_t allocation,int positi
 
             // Check and reallocate memory if needed.
             if(checkAndReallocateMemory(input,&allocation)==0){
+                // Return error code since allocation failed.
                 return -1;
             }
 
@@ -146,10 +147,13 @@ int validateInput(int* argc,char*argv[],char* input,size_t allocation,int positi
             return -1;
         }
     } else {
+        // If -h argument is used
         if(strcmp("-h",*(argv+1))==0){
+            // Print help message
             printf("This program converts decimal numbers to binary numbers.\n"\
             "Usage: ./a.out <decimal number>\nYou can also use this program in"\
             "combination with bin2hec: ./dec2bin 12 | ./bin2hec\n");
+            // Return -1 to break execution
             return -1;
         } else {
             // There is data on argv[1] so lets set the variable
@@ -200,5 +204,6 @@ int checkAndReallocateMemory(char* ptr, size_t *allocation){
         // If the allocation failed
         return assertMemoryAllocated(ptr);
     }
+    // Return status code 1 (true/success)
     return 1;
 }
