@@ -52,8 +52,6 @@ char *convertBinaryToHex (char *binaryRep) {
     hexRepSize = (length / 4) + 1;
     hexRep = (char*)calloc(hexRepSize, sizeof(char));
 
-    printf("Binary rep: %s\n", binaryRep);
-
     // check that memory is correctly allocated
     if (hexRep == NULL) {
         printf("Memory allocation failed.\n");
@@ -72,7 +70,6 @@ char *convertBinaryToHex (char *binaryRep) {
             // the max will be 16. Note that we subtract '0' from the char at j, simply to turn the char to an integer
             fourBitValue = fourBitValue + (pow(2, powerInt) * (binaryRep[j] - '0'));
             // decrement powerInt as the next bit has 2^(powerint - 1) as its max
-            printf("power int: %d    bit number: %d   number at bit: %c  four bit value: %d\n", powerInt, j, binaryRep[j], fourBitValue);
             powerInt--;
 
         }
@@ -86,29 +83,11 @@ char *convertBinaryToHex (char *binaryRep) {
         // Using a switch case we determine which char in Hex is represented by the value of the four bits added
         // the defualt uses normal integers, meaing that the four bit value was less than 10.
         // The char is then saved at the right index using hexRepCounter
-        switch (fourBitValue) {
-            case 10:
-                hexRep[hexRepCounter] = 'A';
-                break;
-            case 11:
-                hexRep[hexRepCounter] = 'B';
-                break;
-            case 12:
-                hexRep[hexRepCounter] = 'C';
-                break;
-            case 13:
-                hexRep[hexRepCounter] = 'D';
-                break;
-            case 14:
-                hexRep[hexRepCounter] = 'E';
-                break;
-            case 15:
-                hexRep[hexRepCounter] = 'F';
-                break;
-            default:
-                // turn the integer into its corresponding ASCII value
-                hexRep[hexRepCounter] = (char) turnIntToChar(fourBitValue);
-                break;
+        if (fourBitValue > 10) {
+            hexRep[hexRepCounter] = 'F' - (15 - fourBitValue);
+        } else {
+            // turn the integer into its corresponding ASCII value
+            hexRep[hexRepCounter] = (char) turnIntToChar(fourBitValue);
         }
         
         // increment counter for next interation
