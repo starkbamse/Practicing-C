@@ -26,23 +26,23 @@ int main() {
         scanf("%d", &input);
         // Case for input 1
         if(input == 1){
-            printf("Input is 1.");
+            printf("Input is 1\n");
         }
         // Case for input 2
         else if(input == 2){
-            printf("Input is 2");
+            printf("Input is 2\n");
         }
         // Case for input 3
         else if(input == 3){
-            printf("Input is 3");
+            printf("Input is 3\n");
         }
         // Case for input 4
         else if(input == 4){
-            printf("Input is 4");
+            printf("Input is 4\n");
         }
         // Case for input 5
         else if(input == 5){
-            printf("Input is 5");
+            printf("Input is 5\n");
         }
     // Prompt the user with the sentence until the input is between 1 and 5.
     } while (input > 0 && input < 6);

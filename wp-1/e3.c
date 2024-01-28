@@ -1,4 +1,7 @@
+// (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
+// Work package 1
 // Exercise 3
+// Submission code: xxxxxx (provided by your TA-s)
 
 // Include section
 #include <stdio.h>
@@ -17,7 +20,6 @@
 * is too low, high or correct. There is a set number of maximum guesses.
 * After the game has finished, the user can either play again or exit the program.
 *
-* Authors: Kaisa Arumeel, Alexander Säfström, Omid Khodaparast
 */
 
 
