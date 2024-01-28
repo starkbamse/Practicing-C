@@ -9,7 +9,7 @@
 #include <string.h>
 
 //Define section
-#define INITIAL_MEMORY_ALLOCATION 5
+#define INITIAL_MEMORY_ALLOCATION 5 // Initial memory allocation for the strings
 #define MIN_CHAR 48 // The number 0 in the ASCII table
 #define MAX_CHAR 49 // The number 1 in the ASCII table
 #define BYTE_LENGTH 8 // The number of bits in a byte
