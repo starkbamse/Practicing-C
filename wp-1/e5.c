@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
+#include <string.h>
 
 #define MAX 100 // Defines the maximum number of the values in the table
 #define MAXNUMBER 20 // Defines the maximum value of random numbers
@@ -30,6 +30,8 @@ void draw_histogram(int *freq);
 int main (void) {
     int table[MAX]; // construct an array with size MAX
     int frequency[MAXNUMBER + 1]; // construct an array with size MAXNUMBER + 1 (from 0 (including) to MAXNUMBER (including))
+    
+    memset(frequency,0,sizeof(frequency));
 
     create_random(table);
     count_frequency(table, frequency);
@@ -58,10 +60,8 @@ void create_random(int *tab) {
 void count_frequency(int *tab, int *freq) {
     int randNum; // this variable holds the random number whihc will be used to find the index in freq
 
-    // initialise all indexes with 0
-    for (int i = 0; i <= MAXNUMBER; i++) {
-        freq[i] = 0;
-    }
+
+
 
     // go through the random number array and count the frequency of each number
     for (int i = 0; i < MAX; i++) {
