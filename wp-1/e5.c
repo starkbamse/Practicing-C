@@ -71,7 +71,7 @@ void create_random(int *tab){
     for(int i=0;i<MAX;i++){
         // Set the current element's value to a random value modulus
         // the maximum number that we have set to be generated.
-        *(tab+i)=rand()%MAXNUMBER+1;
+        *(tab+i)=rand()%(MAXNUMBER+1);
     }
 }
 
@@ -86,11 +86,11 @@ void count_frequency(int *tab,int*freq) {
 
 void draw_histogram(int*freq){
     // Loop from 0 to the maximum value that we can generate.
-    for(int i=0;i<MAXNUMBER;i++){
+    for(int i=0;i<MAXNUMBER+1;i++){
         // Check if the frequency is bigger than 0.
         if(*(freq+i)>0){
             // Print the number.
-            printf("%d ",i);
+            printf("%2d ",i);
             // Loop from 0 to the frequency of this number
             for(int x=0;x<*(freq+i);x++){
                 // Print an x to stdout.
