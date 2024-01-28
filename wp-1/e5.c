@@ -86,18 +86,9 @@ void draw_histogram(int *freq ){
         // Check if the frequency of that value is not zero
         if (freq[i] != 0) {
             // If not zero, then do the following:
-            // Check if the value is less than 10
-            if (i < 10) 
-        {
-            // Then print one more space between the number and x's (because numbers 1-9 are shorter than 10-20)
-            printf("%d   ", i); 
-        }
-        // If the value is between 10 - 20.
-        else
-        {
-            // Then print one less space so the histograms would be aligned.
-            printf("%d  ", i);
-        }
+            // Then print the number and x's
+            printf("%2d  ", i); 
+
         // Loop through the frequency of a value occuring
             for (j = 0; j < freq[i]; j++)
             {
