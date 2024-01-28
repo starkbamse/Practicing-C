@@ -71,8 +71,11 @@ void printEncryptedStr(int shiftValue) {
     char encryptedChar; // variable to hold the encrypted character
     int encryptedStrSize; // the buffer size of the pointer to the argument provided
 
+    // initialise by getting the first character enetered by the user
+    enteredChar = getchar();
+
     // the programme will run until the user enters Crtl + Z or Ctrl + d
-    while (1) {
+    while (enteredChar != EOF) {
         encryptedStrSize = 10; // start by occupying 10 bytes of memory
         encryptedStr = (char*)calloc(encryptedStrSize, sizeof(char)); // allocating 50 char (50n * 1 byte) of memory to the string
         counter = 0; // initialising the counter with 0 every time we want to read a new str printed by the user
@@ -83,7 +86,7 @@ void printEncryptedStr(int shiftValue) {
             exit(0);
         }
 
-        // initialise by getting the first character enetered by the user
+        // get new char by getting the first character enetered by the user
         enteredChar = getchar();
 
         // read chars until user puts enter
