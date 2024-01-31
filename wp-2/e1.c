@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 
 // Define possible directions as enums.
@@ -54,45 +55,58 @@ void move(ROBOT *robot){
 }
 int main(int argc, char * argv[]){
     // Variable declarations
+    
     int x; // The x-coordinate of the robot.
     int y; // The y-coordinate of the robot.
     ROBOT* robot; // The robot object.
     char orders[30]; // Orders to turn or move the robot.
     int i; // Index of the loop
-    char nextChar;
 
-    while(nextChar != EOF) {
-    printf("Please enter the initial x-coordinate of the robot: ");
+    do {
+    printf("\nPlease enter the initial x-coordinate of the robot (-1 to exit): ");
     scanf("%d", &x);
-    if (x > 99 || x < 0)
+    if (x == -1)
     {
-        printf("The initial x-coordinate must be between 0 and 99.\n");
+       printf("\nExiting program.\n");
+       exit(1);
+    } else if (x > 99 || x < 0)
+    {
+        printf("\nThe initial x-coordinate must be between 0 and 99.\n");
         return 1;
     } else {
         robot ->xpos = x;
     }
-    printf("Please enter the initial y-coordinate of the robot: ");
+    printf("\nPlease enter the initial y-coordinate of the robot (-1 to exit): ");
     scanf("%d", &y);
-    if (y > 99 || y < 0)
+    if (y == -1)
     {
-        printf("The initial y-coordinate must be between 0 and 99.\n");
+       printf("\nExiting program.\n");
+       exit(1);
+    }else if (y > 99 || y < 0)
+    {
+        printf("\nThe initial y-coordinate must be between 0 and 99.\n");
         return 1;
     } else {
         robot->ypos = y;
     }
 
-    printf("Please enter a string of characters 'm' and 't', where m stands for move one step in current direction and t for turn of 90 degrees clockwise: ");
+    printf("\nPlease enter a string of characters 'm' and 't', where m stands for move one step in current direction and t for turn of 90 degrees clockwise. ('-q' to exit): ");
     scanf("%s", orders);
-    robot->dir = N;
-    for (i = 0; i < strlen(orders); i++)
+    if (strcmp(orders, "-q")!= 0)
+    {
+       robot->dir = N;
+       for (i = 0; i < strlen(orders); i++)
     {
         if (!(orders[i] == 'm'|| orders[i] == 't')) {
         /* If the received string has any other characters than 'm' or 't' */
-        printf("Please enter a string containing only 'm's or 't's in your request.\n");
+        printf("\nPlease enter a string containing only 'm's or 't's in your request.\n");
         return 0;
         }
     }
-
+    } else {
+        printf("\nExiting program.\n");
+        exit(1);
+    }
     for (i = 0; i < strlen(orders); ++i)
         {
             switch(orders[i]){
@@ -105,7 +119,8 @@ int main(int argc, char * argv[]){
             }
         }
     
-    printf("New position of the robot: x-coordinate: %d y-coordinate: %d\n", robot->xpos, robot->ypos);
-    }
+    printf("\nNew position of the robot: x-coordinate: %d y-coordinate: %d.\n", robot->xpos, robot->ypos);
+    } while (!feof(stdin));
+    
     return 0;
 }
