@@ -23,6 +23,7 @@
 
 //#### Constants #####
 #define MAX 5 // Maximum number of elements in the linked list.
+#define MAX_VALUE 100 // Maximum value of an element in the linked list.
 
 // ##### typedefs ####
 // Defining the element in the linked list.
@@ -63,7 +64,7 @@ int main(int argc, char *argv[])
 
     printf("\n\nAdding a new node...\n");
     // Add a new node with a random value to the linked list.
-    head = add_first(head, rand()%100);
+    head = add_first(head, rand()% (MAX_VALUE + 1));
     // Assign act_post to head.
     act_post = head;
     // Set the number back to 0.
@@ -98,7 +99,7 @@ REGTYPE *top, *old, *item; // Declare REGTYPE variables and set them to NULL.
         // Declare a new node and allocate memory
         item = malloc(sizeof(REGTYPE));
         // Set the number of the node to a random value between 0 and 100.
-        item -> number = rand()%100;
+        item -> number = rand()%(MAX_VALUE + 1);
 
     // Check if it is the first element in the linked list.
         if (i == 0)
