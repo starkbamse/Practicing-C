@@ -51,6 +51,9 @@ int main(int argc,char*argv[]){
         // If any of the function calls return 0 it means that the user
         // has requested to exit.
 
+        // Reset position to north
+        robot.dir=N;
+
         // Print to stdout
         printf("Enter starting position x: ");
 
@@ -120,15 +123,14 @@ int promptCoordinates(int*ptr){
 }
 
 void turn(ROBOT* robot){
-    // Dereference and check if the direction is north.
-    if(robot->dir==N) {
-        // "Loop" over by setting it to be W.
-        robot->dir=W;
+    // Dereference and check if the direction is west.
+    if(robot->dir==W) {
+        // "Loop" over by setting it to be N.
+        robot->dir=N;
         return;
     }
-    // Since the enum has made the order of the directions inverted
-    // we must decrement instead of increment to get the wanted direction.
-    robot->dir--;
+    // Increment the direction to turn clockwise.
+    robot->dir++;
 }
 
 void move(ROBOT* robot){
@@ -138,16 +140,16 @@ void move(ROBOT* robot){
             robot->ypos++;
         break;
         case O:
-            // Dereference and decrease x pos by 1.
-            robot->xpos--;
+            // Dereference and increase x pos by 1.
+            robot->xpos++;
         break;
         case S:
             // Dereference and decrease y pos by 1.
             robot->ypos--;
         break;
         case W:
-            // Dereference and increase x pos by 1.
-            robot->xpos++;
+            // Dereference and decrease x pos by 1.
+            robot->xpos--;
         break;
         default:
         break;
