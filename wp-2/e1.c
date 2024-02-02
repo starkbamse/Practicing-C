@@ -16,7 +16,7 @@
 // --- Type definitions ---
 enum DIRECTION {N, E, S, W}; // directions written in terms of enums
 
-// struct named ROBOT to hold the robot attributes
+// Struct named ROBOT to hold the robot attributes
 typedef struct {
     int xpos;
     int ypos;
