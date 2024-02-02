@@ -144,7 +144,7 @@ int validateInput(char userInput) {
 }
 
 void printRoboPos(ROBOT robo) {
-    char *dir;
+    char *dir; // Variable to hold the direction string
     // Use a switch construct to get the direction and save it s a string
     switch (robo.dir) {
         case N:
