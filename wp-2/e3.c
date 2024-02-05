@@ -49,7 +49,8 @@ int option; // The option the user chooses
 
     // Save the user's answer in the option variable.
     scanf("%d", &option); 
-
+    // Clear buffer
+    while (fgetc(stdin)!= '\n');
     // Depending on the option, select the case.
     switch(option) {
         // If the users chooses option 1 
@@ -85,6 +86,8 @@ int option; // The option the user chooses
 
             //Scan and save their choice
             scanf("%d", &choice);
+            // Clear buffer
+            while (fgetc(stdin)!= '\n');
             // If the user chooses 1
             if(choice == 1) {
                 //Ask the user to enter the first name of the person they want to search for in the file
@@ -92,6 +95,8 @@ int option; // The option the user chooses
 
                 // Save the inputted name in the name variable.
                 scanf("%s", name);
+                // Clear buffer
+                while (fgetc(stdin)!= '\n');
                 // Search for that name in the file.
                 search_by_firstname(name);
             } 
@@ -102,6 +107,8 @@ int option; // The option the user chooses
 
                 // Save the inputted name in the name variable.
                 scanf("%s", name);
+                // Clear buffer
+                while (fgetc(stdin)!= '\n');
                 // Search for that name in the file.
                 search_by_secondname(name);
 
@@ -148,19 +155,25 @@ PERSON input_record(void){
     printf("Enter first name: \n");
 
     //Assign the input to new_person's first name
-    scanf("%s", new_person.firstname);
+    scanf("%19s", new_person.firstname);
+    // Clear buffer
+    while (fgetc(stdin)!= '\n');
 
     // Ask the user to enter the user details
     printf("Enter family name: \n");
 
    //Assign the input to new_person's familu name
-    scanf("%s", new_person.famname);
+    scanf("%19s", new_person.famname);
+    // Clear buffer
+    while (fgetc(stdin)!= '\n');
 
     // Ask the user to enter the user details
     printf("Enter the person's social security number(ssn): \n");
 
     // Assign the inserted social security number to the new_persons pers_number
-    scanf("%s", new_person.pers_number);
+    scanf("%12s", new_person.pers_number); 
+    // Clear buffer
+    while (fgetc(stdin)!= '\n');
 
     // Return the new person
     return new_person;
@@ -189,6 +202,9 @@ void append_file(PERSON *inrecord){
 void printfile(void){
     // Create opening for the file
     FILE * file;
+
+    int records=0; // Number of records in the file
+
     // Open the binary file
     file = fopen("database.bin", "rb");
     // If the file is not found, print error message and return.
@@ -208,14 +224,9 @@ void printfile(void){
         return;
     }
 
-    // Check if the file is empty
-    if(ftell(file) == 0)
-        {
-        // Print a message that the list is empty.
-           printf("\nInput file is empty.\n");
-        }
 
-//While there is a record to read in the file of a person
+
+    //While there is a record to read in the file of a person
     while (fread(person, sizeof(PERSON), 1, file) == 1) {
         //Printing the first name of the person record found
         printf("First name: %s\n", person -> firstname);
@@ -223,6 +234,13 @@ void printfile(void){
         printf("Family name: %s\n", person -> famname);
         //Printing the personal number of the person record found
         printf("Personal number: %s\n\n", person -> pers_number);
+        records++;
+    }
+
+    // Check if the file is empty
+    if(!records) {
+        // Print a message that the list is empty.
+        printf("\nInput file is empty.\n");
     }
 
     //Close the file
@@ -254,11 +272,6 @@ void search_by_firstname(char *name){
         return;
     }
 
-    // Check if the file is empty
-    if(ftell(file) == 0) {
-        // Print a message that the list is empty.
-        printf("\nInput file is empty.\n");
-    }
     //While there is a record to read in the file of a person
      while (fread(person, sizeof(PERSON), 1, file) == 1) {
         //Checking whether the first name of the person read equals the first name provided by the user
@@ -312,11 +325,6 @@ void search_by_secondname(char *name){
         return;
     }
 
-    // Check if the file is empty
-    if(ftell(file) == 0) {
-        // Print a message that the list is empty.
-        printf("\nInput file is empty.\n");
-    }
     //While there is a record to read in the file of a person
      while (fread(person, sizeof(PERSON), 1, file) == 1) {
         //Checking whether the family name of the person read equals the name provided by the user
