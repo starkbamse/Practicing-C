@@ -1,6 +1,6 @@
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
 // Work package 2
-// Exercise 4
+// Exercise 4 (part A)
 // Submission code: xxxxxxx (provided by your TA-s)
 
 // Inlude section
