@@ -40,9 +40,11 @@ int main(int argc, char *argv[]) {
     if (!validateArg(argc, argv)) {
         return 1;
     }
-
+    // Set the hex arg to the hex rep
     hexrep = argv[1];
+    // Unpack the hex rep
     unpack(hexrep);
+    
     // Return 0 upon programe finish to indicate success
     return 0;
 }
