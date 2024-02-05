@@ -1,401 +1,355 @@
-//Include section
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+// (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
+// Work package 2
+// Exercise 3
+// Submission code: 
 
-//Define section
-#define FIRST_NAME_LENGTH 20 // Max length of the first name
-#define FAM_NAME_LENGTH 20 // Max length of the family name
-#define PERS_NUMBER_LENGTH 13 // Max length of the personal number
-#define PROMPT_DESCRIPTION_LENGTH 50 // Max length of descriptions / user prompts
-#define FILE_MODE_LENGTH 2 // Max length of file open mode specification
-#define DEFAULT_DB_NAME "users.db" // Default name of the database file
-
-//Main program section
 
 /**
-* This program allows the user to handle and manage
-* a limited database that allows storing first name,
-* last name and a personal number. It allows the creation,
-* addition and searching of users in the database.
-* 
-* Purpose: To create a miniature DBMS in C.
+* This program manages a database of people. It offers the user options about writing people's data
+* into a binary file and reading it in different ways.
+*
+* Purpose: Reading and writing to binary files.
 * DIT632
+* 
 * 
 **/
 
+
+// Include section
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
 // -----typedefs -------
+// Define a structure for a person
 typedef struct {
-    char firstname[FIRST_NAME_LENGTH]; // First name of the user 
-    char famname[FAM_NAME_LENGTH]; // Family name of the user
-    char pers_number[PERS_NUMBER_LENGTH]; // yyyymmddnnnc
+char firstname[20]; // First name of the person
+char famname[20];   // Last name of the person
+char pers_number[13]; // Personal number with the format yyyymmddnnnc
 } PERSON;
 
-typedef struct {
-    char option[PROMPT_DESCRIPTION_LENGTH]; // A description of the menu option.
-    void(*handler)(); // The handler function for the option
-} OPTION;
+// Function declaration
 
-typedef struct {
-    PERSON* records; // A pointer to all the records.
-    size_t recordSize; // The number of records.
-} dbRecords;
+PERSON input_record(void); // Reads a person’s record.
+void write_new_file(PERSON *inrecord); // Creates a file and writes the first record
+void printfile(void); // Prints out all persons in the file
+void search_by_firstname(char *name); // Prints out people from the file with the given first name
+void append_file(PERSON *inrecord); // Appends a new person to the file
+void search_by_secondname(char *name); // Prints out people from the file with the given family name
 
-// Function declaration (to be extend)
+// Main function of the program
+int main(void){
+// Variable declarations
+PERSON ppost; // Creates a person pointer
+int option; // The option the user chooses
 
-// Reads a person’s record.
-PERSON input_record(void);
+    do { // Do the following as long as the input is between 1 and 4. (5 exits the program)
+    // Print the menu with option 1-5.
+    printf("\nChoose one of the following: \n 1. Create a new and delete the old file.\n 2. Add a new person to the file.\n 3. Search for a person in the file. \n 4. Print out all in the file.\n 5. Exit the program.\n");
 
-// Creates a file and writes the first record
-void write_new_file(PERSON *inrecord); 
+    // Save the user's answer in the option variable.
+    scanf("%d", &option); 
+    // Clear buffer
+    while (fgetc(stdin)!= '\n');
+    // Depending on the option, select the case.
+    switch(option) {
+        // If the users chooses option 1 
+        case 1: 
+        // Set first name of the person structure to John.
+        strcpy(ppost.firstname, "John");
+        // Set family name of the person structure to Doe.
+        strcpy(ppost.famname, "Doe");
+        //Set personnummer of the person structure.
+        strcpy(ppost.pers_number, "200001011234");
 
-// Prints out all persons in the file
-void printfile(void); 
+        // Write a new file and pass in the created person.
+        write_new_file(&ppost);
+        break; 
 
-// Prints out the person if in list
-void search_by_firstname(char *name); 
+        // If the user chooses option 2.
+        case 2:
+            // Call the input record method which lets the user to input the person details.
+            ppost = input_record();
+            // Append this person to the file.
+            append_file(&ppost);
+            break; 
+        // If the user chooses option 3.
+        case 3:
+            printf("Choose below through which option you would like to search for a person in the file\n");
+            // If the user chooses 1, they can search by first name
+            printf("1. Search by first name.\n");
+            // If the user chooses 2, they can search by family name
+            printf("2. Search by second name.\n"); 
 
-// appends a new person to the file
-void append_file(PERSON *inrecord); 
+            int choice; // Choice of the user
+            char name[20]; // The user inputted name
 
-// Used to dynamically print the menu.
-void printMenu(OPTION * options,int * arraylen); 
+            //Scan and save their choice
+            scanf("%d", &choice);
+            // Clear buffer
+            while (fgetc(stdin)!= '\n');
+            // If the user chooses 1
+            if(choice == 1) {
+                //Ask the user to enter the first name of the person they want to search for in the file
+                printf("Enter the first name of the person you are searching for: \n");
 
-// Wrapper function for adding a new person to the list.
-void add_person();
+                // Save the inputted name in the name variable.
+                scanf("%s", name);
+                // Clear buffer
+                while (fgetc(stdin)!= '\n');
+                // Search for that name in the file.
+                search_by_firstname(name);
+            } 
+            // If the user chooses 2
+            else if(choice == 2) {
+                //Ask the user to enter the last name of the person they want to search for in the file
+                printf("Enter the second name of the person you are searching for: \n");
 
-// Wrapper function for searching for a person in the list.
-void search_record();
+                // Save the inputted name in the name variable.
+                scanf("%s", name);
+                // Clear buffer
+                while (fgetc(stdin)!= '\n');
+                // Search for that name in the file.
+                search_by_secondname(name);
 
-// Wrapper function for creating a new file
-void write_file();
-
-// Function for reading from the database.
-dbRecords readDB();
-
-// Function for writing to the database.
-void writeDB(PERSON*record,char mode[FILE_MODE_LENGTH]);
-
-// Helper function to print the records.
-void printRecord(PERSON*record);
-
-// Reads n characters into a pointer omitting the newline character.
-void readIntoPointer(char prompt[PROMPT_DESCRIPTION_LENGTH],char*dest,int length);
-
-int main(int argc,char*argv[]){
-    // Variable declarations
-    int doRun=0; // If this is 1 we shall show the menu again.
-    int nOptions; // Number of menu options.
-    OPTION menuOptions[] = {
-        {
-            "Create a new and delete the old file.", // Option description
-            &write_file // Handler function for creating files
-        },
-        {
-            "Add a new person to the file.", // Option description
-            &add_person // Handler function for adding persons
-        },
-        {
-            "Search for a person in the file.", // Option description
-            &search_record // Handler function for searching
-        },
-        {
-            "Print out all in the file.", // Option description
-            &printfile // Handler for dumping db to stdout
-        }
-    };
-
-    // The size of the entire struct divided by the size of a single struct
-    // yields the number of menu options.
-    nOptions=sizeof(menuOptions)/sizeof(OPTION); 
-
-    // Program logic
-
-    // Runs at least once.
-    do {  
-
-        // Print the menu
-        printMenu(menuOptions,&nOptions);
-
-        // Read an integer from stdin.
-        scanf("%d",&doRun);
-
-        // Purge the buffer from newlines or EOF.
-        while(fgetc(stdin)!='\n' && fgetc(stdin)!=EOF );
-
-        // If user's option is within the boundaries of the array.
-        if((doRun-1)<nOptions){
-            // Access the users selected element and call its handler function.
-            (menuOptions+(doRun-1))->handler();
-        }
-    } while (doRun<=nOptions); // As long as doRun is less than the number of options
-
-    // Exit gracefully.
-    return 0;
-}
-
-// Reading functions
-
-dbRecords readDB(){
-    FILE* ptr; // A pointer to the file.
-
-    size_t allocation= sizeof(PERSON); // Initial allocation of the person.
-
-    PERSON * records = malloc(sizeof(PERSON)); // Pointer to reserved memory.
-
-    PERSON * head=records; // A copy of the reserved memory's beginning.
-
-    dbRecords result; // Here we will store the result of the db read.
-
-    ptr=fopen(DEFAULT_DB_NAME,"rb"); // Read the file in binary mode.
-
-    if(ptr==NULL){ // If its null
-        // Print error message.
-        printf("Could not open file, no such file or directory.\n");
-        result.records=NULL; // Set to null pointer
-        result.recordSize=0; // There are no records
-        return result; // Return empty data.
-    }
-
-    // As long as we have not reached the end of the file
-    while(!feof(ptr)){ 
-
-        // Fread a single record of size person
-        // If fread returns a read size of > 0
-        if(fread(records,sizeof(PERSON),1,ptr)){
-
-            // Increment the allocation by the size of a person
-            // to make space for the next person.
-            allocation+=sizeof(PERSON);
-
-            // Perform reallocation.
-            head=realloc(head,allocation);
-
-            // If the reallocation failed
-            if(records==NULL){
-                // Print error message.
-                printf("Memory reallocation failed!\n");
-                result.records=NULL; // Set to null pointer
-                result.recordSize=0; // There are no records
-                return result; // Return empty data.
+            } else {
+            // If the choice is not valid. print error message.
+                printf("Invalid choice!! Please enter either 1 or 2.");
+                return 0;
             }
-            // Increment the pointer, to the next address block.
-            records++;
-        }
+            break; 
+        // If the user chooses 4
+        case 4: 
+            //Print out all people in the file
+            printfile();  
+            break;
     }
-
-    // The allocation is always optimistically
-    // incrementing the size of the allocation by 1,
-    // since we do not know when feof call will return true.
-    allocation-=sizeof(PERSON);
-
-    // Close the file
-    fclose(ptr);
-
-    // Make the result point to the head of the allocated memory
-    result.records=head;
-
-    // Calculate the number of records by dividing the
-    // reserved memory by a the size of a single PERSON.
-    result.recordSize=allocation/sizeof(PERSON);
-
-    // Return the result.
-    return result;
-}
-
-void search_by_firstname(char* name){
-
-    // Read list from database.
-    dbRecords result = readDB();
-
-    // Remember the start of the memory allocated to the list
-    PERSON* head=result.records;
+    //Do that as long as the input is between 1 and 4 (5 and other inputs exit the program).
+    } while (option >= 1 && option <= 4);
     
-    // Keep track of where we are in loop.
-    int i;
-
-    // If the record is empty but the file exists
-    if(result.recordSize==0 && result.records!=NULL){
-        // Print error message.
-        printf("Empty list!\n");
-    }
-
-    // From 0 to the size of all records
-    for(i=0;i<result.recordSize;i++){
-
-        // Compare if the searched string is in this record
-        if(strcmp(result.records->firstname,name)==0) {
-            // If it is print the record
-            printRecord(result.records);
-
-            // Free the occupied memory.
-            free(head);
-            free(name);
-            return; // Break execution here
-        }
-        // Increment pointer
-        result.records++;
-    }
-    // If we never broke execution earlier, it means
-    // there was never a match found.
-    printf("Could not find wanted user!\n");
-
-    // Free the occupied memory.
-    free(head);
-    free(name);
+return(0);
 }
 
-void printfile(){
-
-    // Read list from database.
-    dbRecords result = readDB();
-
-    // Copy the pointer to the head to remember where we are
-    PERSON* head=result.records;
-
-    // Keep track of where we are in the loop.
-    int i;
-    
-    // If the record size if 0 but the file exists
-    if(result.recordSize==0 && result.records!=NULL){
-        // Print error message
-        printf("Empty list!\n");
-    }
-
-    // From 0 to the size of the record
-    for(i=0;i<result.recordSize;i++){
-        // Print the current record
-        printRecord(result.records);
-        // Increment the pointer
-        result.records++;
-    }
-
-    // Freee the occupied memory
-    free(head);
-}
-
-void search_record(){
-    // Allocate heap memory for the first name.
-    char* firstName=malloc(FIRST_NAME_LENGTH);
-
-    // Read first name
-    readIntoPointer("Enter first name: ",
-        firstName,
-        FIRST_NAME_LENGTH
-    );
-
-    // Search by first name call.
-    search_by_firstname(firstName);
-}
-
-// Writing functions
-
-void writeDB(PERSON* record,char mode[2]) {
-
-    FILE* ptr; // A pointer for the file
-    
-    // Open the file in the specified mode.
-    ptr=fopen(DEFAULT_DB_NAME,mode);
-
-    if(ptr==NULL) { // If the pointer is null
-        // Print error message
-        printf("Could not open file, no such file or directory.\n");
-    }
-
-    // Write the record of size PERSON to the file
-    fwrite(record,sizeof(PERSON),1,ptr);
-
-    // Free the occupied memory
-    free(record);
-
-    // Close the file
-    fclose(ptr);
-}
-
-// Helper & Wrapper functions
-
-void add_person(){
-    // Allocate heap memory of the size of a single person.
-    PERSON * record=malloc(sizeof(PERSON));
-    
-    // Read first name into record
-    readIntoPointer("Enter first name: ",
-    record->firstname,
-    FIRST_NAME_LENGTH
-    );
-
-    // Read family name into record
-    readIntoPointer("Enter family name: ",
-    record->famname,
-    FAM_NAME_LENGTH
-    );
-
-    // Read personnumber into record
-    readIntoPointer("Enter personal number: ",
-    record->pers_number,
-    PERS_NUMBER_LENGTH
-    );
-    
-    // Append the record to the list
-    append_file(record);
-}
-
-void write_file(){
-    // Allocate heap memory of the size of one person
-    PERSON*record = malloc(sizeof(PERSON));
-    // Set dummy data
-    strncpy(record->firstname,"Bob",4);
-
-    // Set dummy data
-    strncpy(record->famname,"Bobson",7);
-
-    // Set dummy data
-    strncpy(record->pers_number,"200203058376",13);
-
-
-    // Write the new file
-    write_new_file(record);
-}
-
-void printMenu(OPTION * options,int * arraylen){
-    int i; // Counter for number of iterations
-
-    // While i is less than the length of the array.
-    for (i=0;i<*arraylen;i++){
-        // Print the option along with its description.
-        printf("%d %s\n",(i+1),((options)+i)->option);
-    }
-
-    // The last option will always give the option to exit
-    // the program.
-    printf("%d Exit the program.\n",(*(arraylen)+1));
-}
-
-void printRecord(PERSON*record) {
-    // Print struct contents to stdout
-    printf("Name: %s - " \
-    "Family name: %s - " \
-    "Person number: %s\n",record->firstname,record->famname,record->pers_number);
-}
-
-void append_file(PERSON *inrecord) {
-    // Write the argument in append binary mode
-    writeDB(inrecord,"ab");
-}
-
+// This function creates a new binary file, it takes as parameter a person and writes it to the file.
 void write_new_file(PERSON *inrecord){
-    // Write the argument in write binary mode
-    // overwriting any previous file.
-    writeDB(inrecord,"wb");
+    // Create opening for the file
+    FILE *file; 
+    // Open the file and call it database.bin
+    file = fopen("database.bin", "wb");
+    // If there is no file found, print error message and return.
+    if(file == NULL){
+        printf("Error opening the file");
+        return;
+    }
+    // Write the person from the method parameters to the file.
+    fwrite(inrecord, sizeof(PERSON), 1, file);
+    // Close the file.
+    fclose(file);
 }
 
-void readIntoPointer(char prompt[PROMPT_DESCRIPTION_LENGTH],char*dest,int length){
-    // Prompt the user
-    printf("%s",prompt);
+// This method asks the user for a person's details and returns the PERSON structure.
+PERSON input_record(void){
+    PERSON new_person; // Declare new person
 
-    // Read the specified length into the destination ptr.
-    fgets(dest,length,stdin);
+    // Ask the user to enter the user details
+    printf("Enter first name: \n");
 
-    // Remove any newlines from the destination.
-    dest[strcspn(dest,"\n")]=0;
+    //Assign the input to new_person's first name
+    scanf("%19s", new_person.firstname);
+    // Clear buffer
+    while (fgetc(stdin)!= '\n');
+
+    // Ask the user to enter the user details
+    printf("Enter family name: \n");
+
+   //Assign the input to new_person's familu name
+    scanf("%19s", new_person.famname);
+    // Clear buffer
+    while (fgetc(stdin)!= '\n');
+
+    // Ask the user to enter the user details
+    printf("Enter the person's social security number(ssn): \n");
+
+    // Assign the inserted social security number to the new_persons pers_number
+    scanf("%12s", new_person.pers_number); 
+    // Clear buffer
+    while (fgetc(stdin)!= '\n');
+
+    // Return the new person
+    return new_person;
+}
+
+// This method appends a person that is passed in the method parameters to the file.
+void append_file(PERSON *inrecord){
+    // Create opening for the file
+    FILE * file;
+    // Open the binary file
+    file = fopen("database.bin", "ab");
+    // If the file is not found, print error message and return.
+    if (file == NULL){
+        printf("Unable to open the file \n");
+        return;
+    }
+    // Write the person from the method parameters to the file.
+    fwrite(inrecord, sizeof(PERSON), 1, file);
+    // Close the file.
+    fclose(file);
+}
+
+
+
+// This method prints all the people and their information in the file.
+void printfile(void){
+    // Create opening for the file
+    FILE * file;
+
+    int records=0; // Number of records in the file
+
+    // Open the binary file
+    file = fopen("database.bin", "rb");
+    // If the file is not found, print error message and return.
+    if (file == NULL){
+        printf("Unable to open the file \n");
+        return;
+    }
+
+    // Declare person pointer.
+    PERSON *person;
+    //Allocate memory to the person
+    person  = malloc(sizeof(PERSON));
+
+    // Check for errors in allocating memory.
+    if (person == NULL) {
+        printf("Error allocating memory.\n");
+        return;
+    }
+
+
+
+    //While there is a record to read in the file of a person
+    while (fread(person, sizeof(PERSON), 1, file) == 1) {
+        //Printing the first name of the person record found
+        printf("First name: %s\n", person -> firstname);
+        //Printing the family name of the person record found
+        printf("Family name: %s\n", person -> famname);
+        //Printing the personal number of the person record found
+        printf("Personal number: %s\n\n", person -> pers_number);
+        records++;
+    }
+
+    // Check if the file is empty
+    if(!records) {
+        // Print a message that the list is empty.
+        printf("\nInput file is empty.\n");
+    }
+
+    //Close the file
+    fclose(file);
+    //Free the memory allocated in the heap for the reading of each record.
+    free(person);
+}
+
+// This method prints out all of the people from the file that match the first name passed in the method parameters.
+void search_by_firstname(char *name){
+    // Create opening for the file
+    FILE * file;
+    // Declare person pointer.
+    PERSON * person;
+    // Allocate memory to the person
+    person = malloc(sizeof(PERSON));
+    // Initialise number of matcher to 0.
+    int num_matches = 0;
+    // Check for errors in allocating memory.
+    if (person == NULL) {
+        printf("Error allocating memory.\n");
+        return;
+    }
+    // Open the binary file
+    file = fopen("database.bin", "rb");
+    // Check for errors in opening the file, if not found, print error message and return.
+    if (file == NULL){
+        printf("Unable to open the file \n");
+        return;
+    }
+
+    //While there is a record to read in the file of a person
+     while (fread(person, sizeof(PERSON), 1, file) == 1) {
+        //Checking whether the first name of the person read equals the first name provided by the user
+        if (strcmp(person -> firstname, name) == 0) {
+            //If the first name or last name of the user read and the name provided match then print all of the attributes of that person
+            //Print the first name of the person record found
+            printf("\nFirstname: %s\n", person -> firstname);
+            //Print the family name of the person record found
+            printf("Famname: %s\n", person -> famname);
+            //Print the personal number of the person record found
+            printf("Personal Number: %s\n", person -> pers_number);
+            //Increment the number of matches
+            num_matches++;
+        }
+    }
+    // If there are no matches found, print appropriate message.
+    if (num_matches == 0) {
+        printf("\n%s not found.\n\n", name);
+    } else {
+        //Print the number of matches found
+        printf("\n%d matches found.\n\n", num_matches);
+    }
+    //Close the file
+    fclose(file);
+    //Freeing the memory allocated in the heap
+    free(person);
+
+}
+
+
+
+void search_by_secondname(char *name){
+    // Create opening for the file
+    FILE * file;
+    // Declare person pointer.
+    PERSON * person;
+    // Allocate memory to the person
+    person = malloc(sizeof(PERSON));
+    // Initialise number of matcher to 0.
+    int num_matches = 0;
+    // Check for errors in allocating memory.
+    if (person == NULL) {
+        printf("Error allocating memory.\n");
+        return;
+    }
+    // Open the binary file
+    file = fopen("database.bin", "rb");
+    // Check for errors in opening the file, if not found, print error message and return.
+    if (file == NULL){
+        printf("Unable to open the file \n");
+        return;
+    }
+
+    //While there is a record to read in the file of a person
+     while (fread(person, sizeof(PERSON), 1, file) == 1) {
+        //Checking whether the family name of the person read equals the name provided by the user
+        if (strcmp(person -> famname, name) == 0) {
+            //If the first name or last name of the user read and the name provided match then print all of the attributes of that person
+            //Print the first name of the person record found
+            printf("\nFirstname: %s\n", person -> firstname);
+            //Print the family name of the person record found
+            printf("Famname: %s\n", person -> famname);
+            //Print the personal number of the person record found
+            printf("Personal Number: %s\n", person -> pers_number);
+            //Increment the number of matches
+            num_matches++;
+        }
+    }
+    // If there are no matches found, print appropriate message.
+    if (num_matches == 0) {
+        printf("\n%s not found.\n\n", name);
+    } else {
+        //Print the number of matches found
+        printf("\n%d matches found.\n\n", num_matches);
+    }
+    //Close the file
+    fclose(file);
+    //Freeing the memory allocated in the heap
+    free(person);
+
 }
