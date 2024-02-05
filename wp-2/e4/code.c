@@ -1,119 +1,129 @@
-//Include section
+// (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
+// Work package 2
+// Exercise 4 (part A)
+// Submission code: 
+
+// Inlude section
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-//Main program section
+// --- Type definitions ---
+// The arguments that will be packed are gathered in one struct called car
+typedef struct {
+    int engineOn;
+    int gearPos;
+    int keyPos;
+    int breakOne;
+    int breakTwo;
+} CAR;
+// --- Type definitions ---
+
+// --- Function declarations ---
+// This function interperets the numbers that are given (the max value is 256) and
+// packs them into a byte
+void packBits(CAR *packCar);
+// Validate the arguments given
+int validateArgs(int argc, char *argv[]);
+// --- Function declarations ---
 
 /**
-* This program accepts 5 arguments that each have a different
-* minimum and maximum value. It then packs them together in a single
-* integer that it then converts to a hexadecimal number.
-* 
-* Purpose: To practice bitwise operations in C.
-* DIT632
-* 
-**/
+ * This program packs 5 different values that are the members of the struct defined above,
+ * into one byte and then prints out the hexadecimal value of the byte to the console
+*/
 
-// Used to convert a set of bits to a hex char
-char bitsToHex(int bits);
+// Main function, where the programe starts
+int main(int argc, char *argv[]) {
+    CAR toPack; // Variable that holds the values that are to be packed
 
-// Used to print a standard error message
-void printErr();
-
-// Used to describe the minimum and max values for
-// a place in the packed bits.
-typedef struct {
-    int min;
-    int max;
-} MINMAX;
-
-int main(int argc, char* argv[]){
-    // Variable declarations
-
-    int bitSize[]={1,3,2,1,1}; // The expected size of each passed bit.
-    char* endptr=NULL; // Used for input validation
-    MINMAX maxVal[]={ // The min and max values for each bit (decimal)
-        {0,1},{0,4},{0,2},{0,1},{0,1}
-    };
-    int number; // The current number that we are working on. 
-    int packedBits=0; // The packed bits containing all numbers.
-    int byteOne; // First byte, later converted to hex.
-    int byteTwo; // Second byte, later converted to hex.
-    int i; // Used for keeping track of where we are in the loop.
-
-    // Program logic
-
-    // If the number of arguments is not 5.
-    if(argc != 6) {
-        // Call printErr function.
-        printErr();
-        // Stop execution.
-        return 0;
+    // If validation fails, return 1 to indicate programe failure
+    if (!validateArgs(argc, argv)) {
+        return 1;
     }
 
+    // Validation passed, save arguments in the struct
+    // Use atoi() to convert the string into integer
+    toPack.engineOn = atoi(argv[1]);
+    toPack.gearPos = atoi(argv[2]);
+    toPack.keyPos = atoi(argv[3]);
+    toPack.breakOne = atoi(argv[4]);
+    toPack.breakTwo = atoi(argv[5]);
+    // Pack the bits and print the hexadecimal val
+    packBits(&toPack);
 
-    // From 1 (program name) through all arguments
-    for(i=1;i<argc;i++){
-        // Convert the string to a long and then downcast to int.
-        int number=strtol(argv[i],&endptr,10);
-        if(number>maxVal[i-1].max || number<maxVal[i-1].min){
-            // Call printErr function.
-            printErr();
-            // Stop execution.
-            return 0;
-        }
-        // If the end char pointer is not a end string char
-        if(*endptr!='\0'){
-            // Call printErr function
-            printErr();
-            // Stop execution
-            return 0;
-        }
-
-        // Make space for our new bits
-        packedBits=packedBits << bitSize[i-1];
-
-        // Perform bitwise OR to "concatenate" two binary numbers.
-        packedBits=packedBits | number;
-    }
-
-    // Split the packedBits into two by
-    // first making the first byte, by shifting it four
-    // bits to the right, essentially deleting the last four bits.
-    byteOne=packedBits>>4;
-
-    // Perform bitwise AND with 00001111
-    // to isolate the second part of the packed
-    // bits but remove the first byte.
-    byteTwo=packedBits & 0x0F;
-
-    // Print the hex chars
-    printf("%c%c\n",bitsToHex(byteOne),bitsToHex(byteTwo));
-
-    // Exit gracefully
+    // Return 0 upon programe finish
     return 0;
 }
 
-char bitsToHex(int bits){ 
-    if(bits<10){
-        // Since hex and dec are equal up to the number 10
-        // we can just take the char 0 and increment the
-        // number to the char to get the wanted char.
-        char hex='0'+bits;
-        return hex;
-    } else {
-        // If its bigger or equal to 10
-        // we can subtract 15-the number to get the
-        // number of chars that we need to subtract
-        // from the maximum hex number which is F.
-        char hex = ('F'-(15-bits));
-        return hex;
-    }
+void packBits(CAR *packCar) {
+    // Note that unsigned char is one byte as it obly has 256 different values
+    unsigned char packed = 0b0; // Variable that holds the packed bits in one byte. Initialised with 0
+
+    // Use the or bitwise operator to input the value of the bit that attributeVal holds
+    packed = packed | packCar->engineOn; // 1
+    // Shift packed to the left by 3, as next is gearPos that takes 3 bits
+    packed <<= 3; //1000
+
+    // Use | to combine both packed and gearPos
+    packed = packed | packCar->gearPos; //1010
+    // Next is keyPOs, shift 2 bits to the left
+    packed <<= 2; //1010 -> 101000
+
+    // Use | to add keyPos bits to the packed byte
+    packed = packed | packCar->keyPos; // 101010
+    // Shift 1 as the next one (breakOne) is only 1 bit
+    packed <<= 1; //1010100
+
+    // Use | to add breakOne bits to the packed byte
+    packed = packed | packCar->breakOne; //1010101
+    // Shift 1 as the next one (breakTwo) is only 1 bit
+    packed <<= 1; //10101010
+
+    // Use | to add breakTwo bits to the packed byte
+    packed = packed | packCar->breakTwo; //10101011
+
+    // The bits are pavked now, print the hexdecimal value
+    printf("%X\n", packed); 
+
 }
 
-void printErr(){
-    // Print string to stdout
-    printf("Invalid input \n" \
-    "Usage: ./a.out [0..1] [0..4] [0..2] [0..1] [0..1] \n" \
-    "e.g. ./a.out 1 2 2 1 1\n");
+int validateArgs(int argc, char *argv[]) {
+    // If there are less or more than 5 args (6 with program name), return 0 to indicate failure in validation
+    if (argc < 6 || argc > 6) {
+        printf("You must provide 5 arguments.\n");
+        return 0;
+    }
+
+    // Check that all arguments have length 1. (One char)
+    for (int i = 1; i <= 5; i++) {
+        // If the length of the argument is bigger than 1, print error massage
+        if (strlen(argv[i]) > 1) {
+            printf("Your arguments must have length 1.\n");
+            return 0;
+        }
+
+        // For gearPos which is the second provided arg, check if it is between and including 0 and 7
+        // ASCII 0 = 48 and ASCII 7 = 55
+        if (i == 2 && (argv[i][0] < 48 || argv[i][0] > 52)) {
+            printf("Gear_pos can be between and including 0 and 4 only.\n");
+            return 0;
+        // For keyPos which is the thirs provided arg, check if it is between and including 0 and 3
+        // ASCII 0 = 48 and ASCII 3 = 51
+        } else if (i == 3 && (argv[i][0] < 48 || argv[i][0] > 50)) {
+            printf("Key_pos can be between and including 0 and 2 only.\n");
+            return 0;
+        // Else, check that the values are either 1 or 0
+        // ASCII 0 = 48 and ASCII 1 = 49
+        } else if (i == 1 || i == 4 || i == 5){
+            if (argv[i][0] != 48 && argv[i][0] != 49) {
+            printf("Engine_on, Break1, and Break2 can only be 0 or 1.\n");
+            return 0;
+            }
+        }
+
+    }
+
+    // All checks pass, return 1 to indicate arguments validation
+    return 1;
+
 }
