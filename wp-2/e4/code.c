@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
     int bitSize[]={1,3,2,1,1}; // The expected size of each passed bit.
     char* endptr=NULL; // Used for input validation
     MINMAX maxVal[]={ // The min and max values for each bit (decimal)
-        {0,1},{0,7},{0,2},{0,1},{0,1}
+        {0,1},{0,4},{0,2},{0,1},{0,1}
     };
     int number; // The current number that we are working on. 
     int packedBits=0; // The packed bits containing all numbers.
@@ -51,11 +51,17 @@ int main(int argc, char* argv[]){
         return 0;
     }
 
+
     // From 1 (program name) through all arguments
     for(i=1;i<argc;i++){
         // Convert the string to a long and then downcast to int.
         int number=strtol(argv[i],&endptr,10);
-
+        if(number>maxVal[i-1].max || number<maxVal[i-1].min){
+            // Call printErr function.
+            printErr();
+            // Stop execution.
+            return 0;
+        }
         // If the end char pointer is not a end string char
         if(*endptr!='\0'){
             // Call printErr function
@@ -82,7 +88,7 @@ int main(int argc, char* argv[]){
     byteTwo=packedBits & 0x0F;
 
     // Print the hex chars
-    printf("%c%c",bitsToHex(byteOne),bitsToHex(byteTwo));
+    printf("%c%c\n",bitsToHex(byteOne),bitsToHex(byteTwo));
 
     // Exit gracefully
     return 0;
@@ -108,6 +114,6 @@ char bitsToHex(int bits){
 void printErr(){
     // Print string to stdout
     printf("Invalid input \n" \
-    "Usage: ./a.out [5 numbers separated by space] \n" \
+    "Usage: ./a.out [0..1] [0..4] [0..2] [0..1] [0..1] \n" \
     "e.g. ./a.out 1 2 2 1 1\n");
 }

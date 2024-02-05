@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//Define section
+#define MAX_RECV_VALUE 203 // Maximum value that the car sys. can have
+
 //Main program section
 
 /**
@@ -55,7 +58,7 @@ int main(int argc, char* argv[]){
         },
         {
             "gear_pos",
-            {0,7},
+            {0,4},
             3,4
         },
         {
@@ -89,7 +92,7 @@ int main(int argc, char* argv[]){
     packedBits=(int) strtol(argv[1],&endptr,16);
 
     // If the received data exceeds max size.
-    if(packedBits>255){
+    if(packedBits>MAX_RECV_VALUE){
         // Print an error
         printErr();
         // Stop execution
@@ -168,6 +171,6 @@ int makeMask(int bitSize, int padEnd){
 void printErr(){
     // Print string to stdout
     printf("Invalid input \n" \
-    "Usage: ./a.out [hex number] \n" \
+    "Usage: ./a.out [hex number max: 203] \n" \
     "e.g. ./a.out AB\n");
 }
