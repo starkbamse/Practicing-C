@@ -1,3 +1,9 @@
+// (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
+// Work package 2
+// Exercise 4 (part B)
+// Submission code: 
+
+
 //Include section
 #include <stdio.h>
 #include <stdlib.h>
@@ -74,7 +80,7 @@ int main(int argc, char* argv[]){
         {
             "brake2",
             {0,1},
-            1,1
+            1,0
         },
     };
 
@@ -107,6 +113,21 @@ int main(int argc, char* argv[]){
         return 0;
     }
 
+    // For each car part
+    for(i=0;i<(sizeof(parts)/sizeof(CAR_PART));i++){
+        // Isolate the wanted bits by masking them using the bitwise AND
+        // e.g. we have this value 10101011 and we want the gear pos:
+        // so we create the mask 01110000 which will allow us to do:
+        // 10101011 & 1110000 = 00100000
+        isolatedBits=packedBits & makeMask(parts[i].bitSize,parts[i].padWith);
+        int result=isolatedBits>>parts[i].padWith;
+        if(result>parts[i].size.max || result<parts[i].size.min ){
+            // Print error
+            printErr();
+            return 0;
+        }
+    }   
+
     // Print to stdout.
     printf("Name             Value\n");
     printf("-----------------------------\n");
@@ -119,8 +140,14 @@ int main(int argc, char* argv[]){
         // Isolate the wanted bits by masking them using the bitwise AND
         // e.g. we have this value 10101011 and we want the gear pos:
         // so we create the mask 01110000 which will allow us to do:
-        // 10101011 & 01110000 = 00100000
+        // 10101011 & 1110000 = 00100000
         isolatedBits=packedBits & makeMask(parts[i].bitSize,parts[i].padWith);
+        int result=isolatedBits>>parts[i].padWith;
+        if(result>parts[i].size.max || result<parts[i].size.min ){
+            // Print error
+            printErr();
+            return 0;
+        }
 
         // Print the value by first shifting it down
         // by how much of bits are to the left of the sub-bits LSB.
@@ -150,19 +177,21 @@ int makeMask(int bitSize, int padEnd){
     int mask=0; // The mask used to isolate bits.
 
     // From 0 to the size of the car parts bits
-    for(i=0;i<bitSize;i++){
+    for(i=0;i<bitSize;i++){ 
         // Make place for one more bit.
         mask=mask<<1;
 
         // Set mask LSB to 1.
         mask=mask|1;
     }
+    //111
 
     // From 0 to how much we need to pad the mask by
     for(i=0;i<padEnd;i++){
         // Shift the mask by 1 to the left;
         mask=mask<<1;
     }
+    //1110000
 
     // Return the mask
     return mask;
