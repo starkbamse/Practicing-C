@@ -29,7 +29,7 @@ void move(ROBOT *robo);
 // This function changes the robot's direction clockwise
 void turn(ROBOT *robo);
 // Clear the buffer
-void clearBuffer();
+void clearBuffer(void);
 // Read input from the user
 char readInput(char *promt);
 // Validate the input provided by the user
@@ -111,7 +111,7 @@ void turn(ROBOT *robo) {
     (*robo).dir = ((*robo).dir + 1) % 4;
 }
 
-void clearBuffer() {
+void clearBuffer(void) {
     char temp; // Variable to hold the char read from stdin
 
     // Read chars until you reach \n
