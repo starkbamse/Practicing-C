@@ -55,9 +55,20 @@ int main(int argc, char *argv[]) {
 
     // Add an item to the beggining of the list
     head = add_first(head, 12);
+    nr = 0;
 
     // Print the first element. it should have value 12
     printf("Top's value is: %d\n", head->number);
+    
+    act_post = head; // The current item is the first item
+    // Iterate through the list 
+    while( act_post != NULL) {
+        // Print each item
+        printf("Post nr %d : %d\n" , ++nr, act_post->number);
+        // Set current item to the next item
+        act_post = act_post->next;
+    }
+
 
     // --- Free the allocated memory --- start by seting current to head (first item)
     while((act_post = head) != NULL){
@@ -81,7 +92,7 @@ REGTYPE* random_list(void) {
     old = NULL;
 
     // Make linked elements a MAX number of times
-    for (i; i < MAX; i++) {
+    for (i= 0; i < MAX; i++) {
         // Allocate memory each time a new iem is added
         item = calloc(1, sizeof(REGTYPE));
 
@@ -132,7 +143,7 @@ REGTYPE* add_first(REGTYPE* temp, int data) {
     }
 
     // Allocate memory to the new top element
-    newTop = calloc(0, sizeof(REGTYPE));
+    newTop = calloc(1, sizeof(REGTYPE));
 
     // Check that memory is allocated correctly
     if (newTop == NULL) {
