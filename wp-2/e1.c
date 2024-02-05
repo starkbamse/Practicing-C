@@ -1,3 +1,9 @@
+// (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
+// Work package 2
+// Exercise 1
+// Submission code: 
+
+
 //Include section
 #include <stdio.h>
 #include <stdlib.h>

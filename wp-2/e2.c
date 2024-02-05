@@ -87,7 +87,7 @@ REGTYPE* random_list(void ){
     top->prev=NULL;
 
     // Generate a random number
-    nr=rand()%MAX_RANDOM+1;
+    nr=rand()%(MAX_RANDOM+1);
 
     // Update the value of the head node.
     top->number=nr;
@@ -104,7 +104,7 @@ REGTYPE* random_list(void ){
         item->next=NULL; 
 
         // Generate a new random number
-        nr=rand()%MAX_RANDOM+1;
+        nr=rand()%(MAX_RANDOM+1);
 
         // Update the number of the new node.
         item->number=nr;
