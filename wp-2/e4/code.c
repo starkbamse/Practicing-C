@@ -60,27 +60,27 @@ void packBits(CAR *packCar) {
     unsigned char packed = 0b0; // Variable that holds the packed bits in one byte. Initialised with 0
 
     // Use the or bitwise operator to input the value of the bit that attributeVal holds
-    packed = packed | packCar->engineOn; // 1
+    packed = packed | packCar->engineOn; 
     // Shift packed to the left by 3, as next is gearPos that takes 3 bits
     packed <<= 3; //1000
 
     // Use | to combine both packed and gearPos
-    packed = packed | packCar->gearPos; //1010
+    packed = packed | packCar->gearPos; 
     // Next is keyPOs, shift 2 bits to the left
     packed <<= 2; //1010 -> 101000
 
     // Use | to add keyPos bits to the packed byte
-    packed = packed | packCar->keyPos; // 101010
+    packed = packed | packCar->keyPos;
     // Shift 1 as the next one (breakOne) is only 1 bit
     packed <<= 1; //1010100
 
     // Use | to add breakOne bits to the packed byte
-    packed = packed | packCar->breakOne; //1010101
+    packed = packed | packCar->breakOne; 
     // Shift 1 as the next one (breakTwo) is only 1 bit
     packed <<= 1; //10101010
 
     // Use | to add breakTwo bits to the packed byte
-    packed = packed | packCar->breakTwo; //10101011
+    packed = packed | packCar->breakTwo; 
 
     // The bits are pavked now, print the hexdecimal value
     printf("%X\n", packed); 
