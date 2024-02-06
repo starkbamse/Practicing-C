@@ -62,22 +62,22 @@ void packBits(CAR *packCar) {
     // Use the or bitwise operator to input the value of the bit that attributeVal holds
     packed = packed | packCar->engineOn; 
     // Shift packed to the left by 3, as next is gearPos that takes 3 bits
-    packed <<= 3; //1000
+    packed <<= 3; 
 
     // Use | to combine both packed and gearPos
     packed = packed | packCar->gearPos; 
     // Next is keyPOs, shift 2 bits to the left
-    packed <<= 2; //1010 -> 101000
+    packed <<= 2; 
 
     // Use | to add keyPos bits to the packed byte
     packed = packed | packCar->keyPos;
     // Shift 1 as the next one (breakOne) is only 1 bit
-    packed <<= 1; //1010100
+    packed <<= 1;
 
     // Use | to add breakOne bits to the packed byte
     packed = packed | packCar->breakOne; 
     // Shift 1 as the next one (breakTwo) is only 1 bit
-    packed <<= 1; //10101010
+    packed <<= 1; 
 
     // Use | to add breakTwo bits to the packed byte
     packed = packed | packCar->breakTwo; 
