@@ -1,7 +1,7 @@
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
 // Work package 2
 // Exercise 4 (part B)
-// Submission code: 
+// Submission code: 2387712
 
 
 //Include section
@@ -43,7 +43,7 @@ typedef struct {
     char description[20]; // Car part description
     MINMAX size; // Min and max size interval
     int bitSize; // How much is occupied
-    int padWith; // How much we should pad with for masking
+    int padWith; // How much we should pad with for masking 
 } CAR_PART;
 
 // Used to generate a mask to be able
