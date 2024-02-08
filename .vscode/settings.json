@@ -16,6 +16,8 @@
         "ratio": "c",
         "stdlib.h": "c",
         "__locale": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "chrono": "c",
+        "unistd.h": "c"
     }
 }
