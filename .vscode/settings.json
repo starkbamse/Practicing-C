@@ -18,6 +18,8 @@
         "__locale": "c",
         "string.h": "c",
         "chrono": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "utility": "c",
+        "algorithm": "c"
     }
 }
