@@ -29,11 +29,14 @@ int main(int argc, char * argv[])
     char copy1[21]; // Copy of the user inputted string using strcopy
     char copy2[21]; // Copy of the user inputted string using our own method
 
+    // Check if the there is a program argument provided
     if (argc == 1)
     {
+    // If there is, scan the txt file for input and save it in the input variable
       scanf("%s", input);
-    } else {
-    // Ask the user to input a string
+    } 
+    // If there is no file provided, ask the user to input a string
+    else {
     printf("\nEnter a string (maximum 20 characters): ");
     // Scan the input and save it in the variable.
     scanf("%s", input);
