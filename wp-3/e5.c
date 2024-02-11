@@ -21,6 +21,11 @@ void fillArr(int **arr);
 void printArrInfo(int **arrAdd);
 // --- Function declaration ---
 
+/**
+ * This program assigns integers between 1 and MAX_NUM_ALLOWED to an array of size MAX
+ * Then the program print sinformation about the array
+*/
+
 // main function, where the program starts
 int main(void) {
     int *arr; // An array of integers
