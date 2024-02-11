@@ -36,12 +36,13 @@ char keys[4][4]={
 
 /**
  * This program reads keys that are pressed on akeypad and prints them on the serial monitor
- * Note: The keypad is 4x4 whihc means there are 16 different outputs (0-F in hex). Row pins are
- * configured as OUTPUT and col pins as INPUT. USing digitalRead() we get col values and using 
+ * Note: The keypad is 4x4 which means there are 16 different outputs (0-F in hex). Row pins are
+ * configured as OUTPUT and col pins as INPUT. Using digitalRead() we get col values and using 
  * digitalWrite() we set row values. If a row and a col are both 0, then that key is pressed.
  * Otherwise the key in unpressed.
 */
 
+// steup function, executed once when executable code is flushed on the board
 void setup() {
     // Set the row digital pins as OUTPUT
 	pinMode(ROW_1_PIN, OUTPUT);
@@ -63,6 +64,7 @@ void setup() {
     digitalWrite(ROW_4_PIN, HIGH);
 }
 
+// The loop function, executed forever by the Uno. It is basically and infinite loop
 void loop() {
     // If a key is pressed, print it to the serial monitor
     if (isKeyPressed()) {
@@ -79,10 +81,6 @@ int isKeyPressed(void) {
         // Set the row to LOW
         digitalWrite(row, LOW);
         for (col = COL_1_PIN; col <= COL_4_PIN; col++) {
-            // Serial.print("Row: ");
-          	// Serial.println(row - ROW_1_PIN);
-          	// Serial.print("Col: ");
-          	// Serial.println(col - COL_1_PIN);
             // If the col returns 0, then th ekey is pressed. save the key value, and return 1 to indicate true
             if (!digitalRead(col)) {
                 // Serial.println(col - COL_1_PIN);
