@@ -6,6 +6,7 @@
 //Include section
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #ifdef _WIN32
     #include <io.h>
 #else
@@ -35,6 +36,7 @@ int main(int argc, char* argv[]) {
     // Variable declarations
     char* input=malloc(MAX_CHARS+1); // Users input on heap
     char* copiedString=malloc(MAX_CHARS+1); // The copied string on heap
+    char* copiedString2=malloc(MAX_CHARS+1); // The 2nd copied string on heap
 
     // If memory allocation failed
     if(input==NULL || copiedString==NULL){
@@ -63,15 +65,22 @@ int main(int argc, char* argv[]) {
     // Read 20 characters
     scanf("%20s",input);
 
+    // Copy the received string using a builting method.
+    strcpy(copiedString,input);
+
     // Copy the received string into the new string.
-    copyString(input,copiedString);
+    copyString(input,copiedString2);
+    
+    // Print the string to stdout
+    printf("strcpy: %s\n",copiedString); 
 
     // Print the string to stdout
-    printf("%s\n",copiedString); 
+    printf("copyString: %s\n",copiedString); 
 
     // Free occupied heap memory.   
     free(input);
     free(copiedString);
+    free(copiedString2);
 
     // Exit gracefully
     return 0;
