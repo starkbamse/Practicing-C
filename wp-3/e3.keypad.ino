@@ -30,6 +30,8 @@
 * Purpose: To receive input from a keypad using an arduino.
 * DIT632
 * 
+* Design: https://www.tinkercad.com/things/jdMRdh80S7I-wp3e3keyboarddit633?sharecode=x0vdyAv7zGjYH0d6l1xbQisLQw_efdj8qv3SL73Jx2E
+*
 **/
 
 // Used to map a row and col combination to a char.

@@ -24,6 +24,8 @@
 * Purpose: To monitor the relationship between temperature
 * and light.
 * DIT632
+*
+* Design: https://www.tinkercad.com/things/8rlVARXvi2E-wp3e3dit633?sharecode=755llqPW5Ph0jcfANIKEEX4ZpnBk_y3lRN-X_dbpKP8
 * 
 **/
 

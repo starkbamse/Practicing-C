@@ -19,6 +19,8 @@
 * 
 * Purpose: To receive input from a keypad using an arduino.
 * DIT632
+*
+* Design: https://www.tinkercad.com/things/72VnqaGEeVI-wp3e4dit633?sharecode=w6hqL9xEjEBOgZSf6kYHR-xdGShP9yBZeeJGuDLx8os
 * 
 **/
 

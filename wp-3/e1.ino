@@ -11,6 +11,7 @@
 * Purpose: To blink an LED on the arduino
 * DIT632
 * 
+* Design: https://www.tinkercad.com/things/6J155Pc7l5w-wp3e1dit633?sharecode=R_RzX0wjPPQRQL9iquZ_uUF2ZmacrJ7wE43kVILxP5U
 * 
 **/
 
