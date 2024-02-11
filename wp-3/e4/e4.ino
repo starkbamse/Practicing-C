@@ -1,5 +1,3 @@
-#include <Keypad.h>
-
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
 // Work package 3
 // Exercise 4
