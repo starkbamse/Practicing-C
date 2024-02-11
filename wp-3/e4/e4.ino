@@ -21,7 +21,8 @@ char keys[4][4]={
  {'4','5','6','B'},
  {'7','8','9','C'},
  {'*','0','#','D'}};
-Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, 4, 4); // Variable to hold the keypad object
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, 4, 4); // Keypad object
+// The last two argument stand for the number of rows and cols which are 4 and 4
 // --- Variable declaration ---
 
 /**
@@ -33,8 +34,6 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, 4, 4); // Variable to
 
 // steup function, executed once when executable code is flushed on the board
 void setup() {
-    // Initialise the keypad object, the last two argument stand for the number of rows and cols which are 4 and 4
-	// keypad = Keypad(makeKeymap(keys), rowPins, colPins, 4, 4);
     // Set the serial monitor to read 9600 bits per second
     Serial.begin(9600);
 }
