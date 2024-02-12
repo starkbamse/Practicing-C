@@ -4,7 +4,7 @@
 // Submission code:
 
 // Define section
-#define ADC_RESOLUTION 1024.0 // ADC Resolution of 10 bit
+#define ADC_RESOLUTION 1023.0 // ADC Resolution of 10 bit
 #define MAX_VOLT_MV 5000.0 // Reference voltage
 #define RED 2 // Red led
 #define GREEN 3 // Green led
@@ -154,7 +154,7 @@ float getmV(int pin){
   
   // Convert the adc count to millivolt by doing
   // (ADCCount/ADCResolution) * Reference voltage
-  // Example: (700 ADCc /1024 ADCr) * 5000 mV = 3417 mV
+  // Example: (700 ADCc /1023 ADCr) * 5000 mV = 3417 mV
   mV=(ADCCount/ADC_RESOLUTION)*MAX_VOLT_MV;
   
   // Return millivolts
