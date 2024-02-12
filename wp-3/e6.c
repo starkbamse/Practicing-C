@@ -67,16 +67,11 @@ int main(int argc, char *argv[]) {
 void copyStr(char *strToCopy, char **copiedStr) {
     int i = 0; // Array index counter
 
-    // Have an infinite loop. The loop breaks until the null char is seen
-    while (1) {
+    // Loop until the null char is seen
+    while (strToCopy[i] != '\0') {
         // Copy char at i index
         (*copiedStr)[i] = strToCopy[i];
-        // If the char at this index is the null char, break the loop
-        if (strToCopy[i] == '\0') {
-            break;
-        }
-
-        // Otherwise continue copying. increment i 
+        // Increment i 
         i++;
     }
 }
