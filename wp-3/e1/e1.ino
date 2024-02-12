@@ -10,9 +10,9 @@
 
 /**
  * This program makes use of LEDs and a pushdown button.
- * The pupose of the program is to make a LED blink every one sec and
- * use the pushdwn button to turn on the other LED.
- * When the button i spressed, the LED is turned on and when it is unpressed
+ * The purpose of the program is to make a LED blink every one sec and
+ * use the pushdown button to turn on the other LED.
+ * When the button is pressed, the LED is turned on and when it is not pressed
  * the LED is turned off.
 */
 
@@ -28,7 +28,7 @@ void setup() {
     pinMode(LED_2_PIN, OUTPUT);
     // Set the pin connecting the pushdown button to the uno as INPUT
     // This is due to the fact that we want to read input from the button,
-    // aka, when it is pressed, and when it is unpressed
+    // aka, when it is pressed, and when it is not pressed
     pinMode(PUSHDOWN_B_PIN, INPUT);
 }
 
@@ -53,10 +53,12 @@ void loop() {
     
     // Delay for one sec, as LED_1 should blink
     // The delay function delays by mili seconds
-    // 1000 mili sec = 1 sec
+    // 1000 milli sec = 1 sec
     delay(1000);
     // Turn LED_1 on
     digitalWrite(LED_1_PIN, HIGH);
+    // 1000 milli sec = 1 sec
+    delay(1000);
 
     // The next Iteration, we will read button input again
     // Turn off LED_1 and so on
