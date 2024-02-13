@@ -51,11 +51,15 @@ int main(int argc,char* argv[]){
         array[i]=random;
     }
 
-    // Print statistics to stdout
+    // Print the address of the pointer by %p
     printf("The value of the address of the array (pointer) is: %p\n", array);
+    // Print the first element in the array
     printf("First integer in the array is (array[0]): %d\n", array[0]);
+    // Print the last element in the array which has position 4 in the array.
     printf("The last integer in the array is: %d\n", array[MAX-1]);
+    // Print the number of bytes of an integer as long unsigned format.
     printf("The size of an integer (number of bytes) is: %lu\n", sizeof(int));
+    // Print the number of bytes of the whole array as long unsigned format.
     printf("The size of the whole array in bytes is: %lu\n", sizeof(int)*MAX);
     
     // Loop from 0 to MAX
