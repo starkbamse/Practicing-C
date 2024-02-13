@@ -42,7 +42,7 @@ char keys[4][4]={
  * Otherwise the key in unpressed.
 */
 
-// steup function, executed once when executable code is flushed on the board
+// Setup function, executed once when executable code is flushed on the board
 void setup() {
     // Set the row digital pins as OUTPUT
 	pinMode(ROW_1_PIN, OUTPUT);
