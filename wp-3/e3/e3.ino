@@ -6,7 +6,7 @@
 
 int TEMP_SENSOR_MAX = 1023; // Maximum value of the temperature sensor range.
 int temperatureSensorPin = A0; // Define pin for temperature sensor.
-const float referenceVoltage = 5000.0; // Arduino reference voltage in volts
+const float referenceVoltage = 5000.0; // Arduino reference voltage in millivolts
 
 
 void setup()
@@ -21,7 +21,7 @@ void loop()
   // Get the analog reading value for the voltage from the temperature sensor.
   float sensorValue = analogRead(temperatureSensorPin);
   
-  //Convert the analog value into voltage(0-5V)
+  //Convert the analog value into millivolts
   float voltage = (sensorValue / TEMP_SENSOR_MAX)*referenceVoltage;
   //Calculate the temperature based on the formula given.
   float temperature = (voltage-500)/10;
