@@ -33,6 +33,7 @@ int main(int argc, char * argv[])
     printf("\nEnter a string (maximum 20 characters): ");
     // Scan the input and save it in the variable.
     scanf("%20s", input);
+    
 
     // Check if the input is too long
     if(strlen(input) > 20) {
@@ -40,7 +41,6 @@ int main(int argc, char * argv[])
         printf("Enter a maximum of 20 characters. \n");
         return 1;
     }
-    
 
     // Print the received input
     printf("\nReceived string: %s\n", input);
