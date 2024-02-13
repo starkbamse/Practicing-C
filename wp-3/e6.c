@@ -31,9 +31,12 @@ int main(int argc, char * argv[])
       memset(copy2,0,21);
 
     printf("\nEnter a string (maximum 20 characters): ");
-    // Scan the input and save it in the variable.
-    scanf("%20s", input);
     
+    // Scan the input and check that it is not empty
+    if (scanf("%[^\n]", input) != 1) {
+        // If it is, then print error message and return with error code.
+        input[0] = '\0';
+    }
 
     // Check if the input is too long
     if(strlen(input) > 20) {
@@ -52,7 +55,7 @@ int main(int argc, char * argv[])
     printf("Copied string via strcpy(): %s\n", copy1);
     // Call the method copystring to make a copy of the inputted string.
     copystring(copy2, input);
-    //printf("Copied string via copystring() method: %s\n", copy2);
+    printf("Copied string via copystring() method: %s\n", copy2);
 
     /* End of function */
     return 0;
