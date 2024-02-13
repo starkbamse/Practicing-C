@@ -1,7 +1,7 @@
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
 // Work package 3
 // Exercise 5
-// Submission code:
+// Submission code: 346221
 
 //Include section
 #include <stdio.h>
@@ -52,11 +52,11 @@ int main(int argc,char* argv[]){
     }
 
     // Print statistics to stdout
-    printf("The value of the address of the array (pointer) is: %p\n",array);
-    printf("First integer in the array is (array[0]): %d\n",array[0]);
-    printf("The last integer in the array is: %d\n",array[MAX-1]);
-    printf("The size of an integer (number of bytes) is: %lu\n",sizeof(int));
-    printf("The size of the whole array in bytes is: %lu\n",sizeof(int)*MAX);
+    printf("The value of the address of the array (pointer) is: %p\n", array);
+    printf("First integer in the array is (array[0]): %d\n", array[0]);
+    printf("The last integer in the array is: %d\n", array[MAX-1]);
+    printf("The size of an integer (number of bytes) is: %lu\n", sizeof(int));
+    printf("The size of the whole array in bytes is: %lu\n", sizeof(int)*MAX);
     
     // Loop from 0 to MAX
     for(i=0;i<MAX;i++){

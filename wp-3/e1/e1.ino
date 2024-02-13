@@ -1,7 +1,7 @@
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
 // Work package 3
 // Exercise 1
-// Submission code: xxxxxxx
+// Submission code: 346221
 
 // Define section
 #define LED_1_PIN 2

@@ -1,7 +1,7 @@
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 (2024)
 // Work package 3
 // Exercise 5
-// Submission code: 
+// Submission code: 346221
 
 #include <stdio.h>
 #include <string.h>
@@ -26,9 +26,9 @@ int main(int argc, char * argv[])
     char input[21]; // User inputted string of 20 characters - end of string character
     char copy1[21]; // Copy of the user inputted string using strcopy
     char copy2[21]; // Copy of the user inputted string using our own method
-      memset(input,0,21);
-      memset(copy1,0,21);
-      memset(copy2,0,21);
+    memset(input,0,21);
+    memset(copy1,0,21);
+    memset(copy2,0,21);
 
     printf("\nEnter a string (maximum 20 characters): ");
     

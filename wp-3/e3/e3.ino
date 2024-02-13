@@ -1,7 +1,7 @@
 // (C) Omid Khodaparast, Kaisa Arumeel, Alexander Säfström - Group 2 
 // Work package 3 
 // Exercise 3
-// Submission code:
+// Submission code: 346221
 
 
 int TEMP_SENSOR_MAX = 1023; // Maximum value of the temperature sensor range.

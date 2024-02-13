@@ -1,7 +1,7 @@
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
 // Work package 3
 // Exercise 2
-// Submission code:
+// Submission code: 346221
 
 // Define section
 #define ADC_RESOLUTION 1023.0 // ADC Resolution of 10 bit
@@ -25,8 +25,6 @@
 * and light.
 * DIT632
 *
-* Design: https://www.tinkercad.com/things/ciiasMum0hx-wp3e2dit633?sharecode=avhCihTuua-ICVL5G6Q38nlS2vDst1nZYbM8TZQaX6c
-* 
 **/
 
 

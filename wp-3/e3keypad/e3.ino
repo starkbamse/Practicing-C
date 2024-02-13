@@ -1,7 +1,7 @@
 // (C) Omid Khodaparast, Kaisa Arumeel, Alexander Säfström - Group: 2
 // Work package 3 
 // Exercise 3 keypad
-// Submission code: 
+// Submission code: 346221
 
 
 const byte row = 4; // Row of size 4
@@ -43,7 +43,7 @@ void loop()
         // Print out the current character from the matrix.
         Serial.println(keys[i][j]); 
         // Delay for half a second
-        delay(500);
+        delay(1000);
       }
     }
     // Turn the flow of circuit on for the current row pin.
