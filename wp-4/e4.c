@@ -1,6 +1,18 @@
+// (C) Omid Khodaparast, Alexander Säfström, Kaisa Arumeel - Group 2 
+// Work package 4
+// Exercise 4
+// Submission code: 
+
 #include <stdio.h>
 #include <stdlib.h>
 
+/*
+* This program creates a test array and allows the user to search for a number in that array.
+* The program also uses bubble sort to sort the array.
+*
+* Purpose: Lists and sorting.
+* DIT632
+*/
 
 // Task a
 // The method searches for a number that is passed in, in an array of a specified size
