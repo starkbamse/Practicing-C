@@ -18,6 +18,10 @@
         "__locale": "c",
         "string.h": "c",
         "chrono": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "sstream": "c",
+        "__mutex_base": "c",
+        "mutex": "c",
+        "memory": "c"
     }
 }
