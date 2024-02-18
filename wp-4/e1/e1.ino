@@ -3,6 +3,8 @@
 // Exercise 1
 // Submission code: xxxxxxx
 
+// LINK: https://www.tinkercad.com/things/8XnHlaexh90-temp-reader-using-timer-interrupts
+
 // Define section
 // TIMER1 is 16 MHz, meaning that there are 16,000,000 oscillations per second
 // Timers have a pre-scaler which is used to lowe the frequency of the timer. The scale is 1, 8, 64, 256, 1024 for TIMER0 and TIMER1

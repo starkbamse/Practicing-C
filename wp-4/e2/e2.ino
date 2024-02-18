@@ -3,6 +3,8 @@
 // Exercise 2
 // Submission code: xxxxxxx
 
+// LINK: https://www.tinkercad.com/things/f3YRB3KPzpE
+
 // Include section
 // We use the Servo library to move the the Micro servo
 #include <Servo.h>
