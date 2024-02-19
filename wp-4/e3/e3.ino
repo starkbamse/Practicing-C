@@ -1,133 +1,98 @@
-// (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
+// (C) Omid Khodaparast, Alexander Säfström, Kaisa Arumeel - Group 2 
 // Work package 4
 // Exercise 3
 // Submission code: 
 
-//Include section
-#include <Adafruit_NeoPixel.h>
 
-//Define section
-#define NEOPIXEL 3 // White LED
-#define TEMP_SENSOR A0 // Temperature sensor
-#define ADC_RESOLUTION 1023.0 // ADC resolution of Arduino
-#define MAX_VOLT_MV 5000.0 // Reference voltage
-#define LED_COUNT 12
-#define RED_LED 4
+#include <Adafruit_NeoPixel.h> // adding a NeoPixel library for the NeoPixel ring
 
-//Main program section
-
-/**
-* This program uses the NeoPixel Ring by Adafruit to light up
-* its LEDs when a temperature threshold is reached
-* 
-* Purpose: To learn about the NeoPixel ring by Adafruit.
-* DIT632
+/*
+* This program displays Neopixel LED lights based on the temperature.
+* If the temperature is high enough to light all LEDs, another red LED is lit.
 *
-* https://www.tinkercad.com/things/129X2u8sQOd-wp4e3?sharecode=Wz6VYFzPqRtc9E-Ta01BXaxsfyGDqv69DiONyzqOkE0
-* 
-**/
+* Purpose: Neopixel ringlight.
+* DIT632
+*/
 
-Adafruit_NeoPixel ring(LED_COUNT, NEOPIXEL, NEO_RGB);
+// Define section
+#define LED_PIN 6 // NeoPixel ring to pin 6
+#define LED 7 // LED to pin 7
+#define LIGHTS 12 // Amount of lights in Neopixel ring
+#define TEMP_PIN A0 // Temperature pin is A0
+
+// Variable declarations
+int TEMP_SENSOR_MAX = 1023; // Maximum value of the temperature sensor range.
+const float referenceVoltage = 5000.0; // Arduino reference voltage in volts
 
 
-// Used to get x millivolts from pin y
-float getmV(int pin);
-
-// Used to calculate temperature and turn on correct led.
-void calcTemp();
-
-int minTemps[]={
-  8,16,24,32,40,48,56,64,72,80,88,96,100
-};
+// Initialize NeoPixel ring as a strip, assign 12 lights to it, pin number 8 and initialize color bytes
+Adafruit_NeoPixel strip(LIGHTS, LED_PIN, NEO_GRB + NEO_KHZ800); 
 
 void setup()
 {
-  // Set the temperature sensor to be input mode.
-  pinMode(TEMP_SENSOR,INPUT);
-  
-  // Set neopixel to be output mode
-  pinMode(NEOPIXEL,OUTPUT);
-  
-  // Set the red led to be output mode
-  pinMode(RED_LED,OUTPUT);
-  
-  // Begin serial comms at 9600 baud
-  Serial.begin(9600);
-  
-  // Initialize the neopixel ring
-  ring.begin();           
-  
-  // Display the initial values
-  ring.show();            
-  
-  // Set LED brightness to 50%
-  ring.setBrightness(50); 
-
+  strip.begin(); // Start the NeoPixel ring
+  strip.show(); // Display the colors on the ring
 }
 
-void loop(){
-
-  int temp; // Used to store temperature
-  int i; // To keep track of where we are in loop.
-  int oneNotLit=0; // A switch if a LED is off.
-  
-  /*
-  * TMP36 is designed to output 750mV at 25C.
-  * TMP36 increases its mV output by 10mV for every 1C.
-  * This means that we can divide mV by 10 to get the degrees.
-  * Since 75 differs by a constant of 50 from 25 we subtract this
-  * from the result to get the final formula: C=(x/10)-50
-  */
-  temp=(getmV(TEMP_SENSOR)/10)-50;
-  
-  // Loop through all the thresholds
-  for(i=0;i<(LED_COUNT);i++){
-    // If the temperature is greater than min. threshold
-    if(temp>=minTemps[i]){    	
-      	// Activate blue color on this LED
-      	ring.setPixelColor(i, 0,0, 255, 0);
-      
-        // Display the new color
-    	ring.show();
-      
-      	// Delay for artistic purposes.
-      	delay(10);
-      	
-    } else {
-      	oneNotLit=1;
-      	// If the temperature is too low, we will turn off
-        // the LED on this address.
-        ring.setPixelColor(i, 0, 0, 0, 0);
-         
-      // Delay for artistic purposes.
-      	delay(10);
-     
-        // Update ring state.
-    	ring.show();
+// This method takes in the amount of lights to light up and lights them up on the Neopixel ring
+void fillColors(int amount) { 
+  // Loop from 0 until the amount given in parameters
+  for(int i = 0; i < amount; i++) { 
+    // Set a color on every LED light in NeoPixel
+      strip.setPixelColor(i, 64, 156, 255); 
+      strip.show(); // Display the colors
     }
-  }
   
-  // If all LEDs are lit
-  if(!oneNotLit){
-     // Activate the red led
-    digitalWrite(RED_LED,HIGH);  
-  } else {
-    // If at least one LED not, lit. Send LOW signal.
-    digitalWrite(RED_LED,LOW);
-  }
+  // Loop backwards in the rest of the LEDs
+   for(int i = 12; i >= amount; i--) { 
+     // Set the color of LED to white
+      strip.setPixelColor(i, 0, 0, 0); 
+      strip.show(); // Display the colors
+    }
+
 }
 
-float getmV(int pin){
-  int ADCCount; // The digital representation of analog value
-  float mV; // The millivolts
+void loop()
+{
 
-  ADCCount=analogRead(pin); // Read adc count
-  
-  // Convert the adc count to millivolt by doing
-  // (ADCCount/ADCResolution) * Reference voltage
-  // Example: (700 ADCc /1023 ADCr) * 5000 mV = 3417 mV
-  mV=(ADCCount/ADC_RESOLUTION)*MAX_VOLT_MV;
-  
-  // Return millivolts
-  return mV;
+    // Get the analog reading value for the voltage from the temperature sensor.
+    float sensorValue = analogRead(TEMP_PIN);
+
+    //Convert the analog value into voltage(0-5V)
+    float voltage = (sensorValue / TEMP_SENSOR_MAX)*referenceVoltage;
+    //Calculate the temperature based on the formula given.
+    int temperature = (voltage-500)/10;
+
+    // Turn off the red LED.
+    digitalWrite(LED, LOW);
+    // Check if the temperature is negative
+    if(temperature < 0) {
+        // Fill one led on the neopixel ring
+        fillColors(1);
+    } 
+    // Check if temperature is between 0 and 10
+    else if(temperature >= 0 && temperature < 10) {
+         // Fill 3 leds on the neopixel ring
+        fillColors(3); 
+    } 
+    // Check if temperature is between 10 and 20
+    else if(temperature >= 10 && temperature < 20) { 
+        // Fill 6 leds on the neopixel ring
+        fillColors(6); 
+    } 
+    // Check if temperature is between 20 and 30
+    else if(temperature >= 20 && temperature < 30) {
+        // Fill 9 leds on the neopixel ring
+        fillColors(9);
+    } 
+     // Check if temperature is over 30
+    else if(temperature >= 30) { 
+        // Fill all 12 leds on the neopixel ring
+        fillColors(12); 
+        // Light up the red led
+        digitalWrite(LED, HIGH); 
+    }
+
+  delay(500); // delay for 0.5 seconds
+
 }
