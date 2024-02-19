@@ -1,8 +1,3 @@
-// (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
-// Work package 4
-// Exercise 2
-// Submission code: 
-
 //Define section
 #define SERVO 3 // Servo motor
 #define SERVO_PULSE_DURATION 50000 // 20ms in microseconds
@@ -10,11 +5,12 @@
 #define MAX_VOLT_MV 5000.0 // Reference voltage
 #define CLOCK_SPEED 16000000.0 // Clock speed of Uno
 #define PRESCALER 1024.0 // Prescaler of choice to emulate slow clock
-#define SECONDS_INTERVAL 0.02 // Every x seconds to update LEDs
+#define SECONDS_INTERVAL 0.02 // Every x seconds to run ISR
 #define MIN_PULSE 544 // Minimum pulse length for servo
 #define MAX_PULSE 2400 // Maximum pulse length for servo
 #define TIMER_VALUE_SECONDS 5 // Start timer from value
 #define SERVO_MAX_DEGREE 180.0 // Maximum degree turn of servo
+#define TIMER_SECONDS 60
 //Main program section
 
 /**
@@ -24,8 +20,6 @@
 * Purpose: To learn about timer interrupts and internal
 * structure of the Arduino MCU.
 * DIT632
-*
-* https://www.tinkercad.com/things/9hMiGkrmYC6-wp4e2?sharecode=DYQV_O1eZlHhnM8Jd7E2NM15IyOtdFuUBZTIj-GAkK0
 * 
 **/
 
@@ -36,7 +30,7 @@ int angleToPulse(float angle);
 void goTo(float angle);
 
 // Number of seconds left in the timer
-volatile int timeLeft=30;
+volatile int timeLeft=TIMER_SECONDS;
 
 // Number of fractions of a second.
 volatile int secondFractions=0;
@@ -144,14 +138,11 @@ ISR(TIMER1_COMPA_vect) {
   * depend on the servo's refresh rate. As mentioned, 50 hz.
   * Which in this case results in 50 second fractions
   */
-  
-  // In this case the maximum seconds would be 30 since the
-  // servo can only turn 180 degrees.
-  int maxSeconds=(60.0*(SERVO_MAX_DEGREE/360.0));
+ 
   
   // Map the amount of time left to a degree for the servo
   // After that call goTo to move the servo
-  goTo(map(timeLeft,maxSeconds,0,0,180));
+  goTo(map(timeLeft,TIMER_SECONDS,0,0,180));
   
   // If the number of secondFractions is 50 (50 hz) and time >0
   if((secondFractions>=(1000/(1000*SECONDS_INTERVAL)))
