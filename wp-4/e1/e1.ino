@@ -27,8 +27,6 @@
 * structure of the Arduino MCU.
 * DIT632
 *
-* https://www.tinkercad.com/things/47gG3Iy8ytA-wp4e1?sharecode=AxyeTj9PibRFon8GgSCVyATOhDdUYbBfXvVlvE8zBRU 
-* 
 **/
 
 // Used to get x millivolts from pin y
