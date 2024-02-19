@@ -1,3 +1,8 @@
+// (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
+// Work package 4
+// Exercise 1
+// Submission code: 
+
 //Define section
 #define SERVO 3 // Servo motor
 #define SERVO_PULSE_DURATION 50000 // 20ms in microseconds
