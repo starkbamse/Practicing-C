@@ -22,7 +22,8 @@
 #define MAX_ANG 180
 #define MIN_ANG 0
 #define SERVO_PIN 11
-#define ANGLE_TO_TURN_PER_SEC 45
+#define ANGLE_TO_TURN_PER_SEC 3
+#define TIMER_VAL 60
 
 // --- Function declaration ---
 // Moves the Micro Servo in both directions
@@ -37,7 +38,7 @@ volatile uint8_t angle = 0;
 // Boolean variable used to see if the servo should move forward or backwards
 volatile uint8_t forwardMove = 1;
 // Keep seconds counted since the program started
-volatile unsigned int secondCounter = 0;
+volatile unsigned int secondCounter = TIMER_VAL;
 // Keep the number of times the interrupt has taken place
 volatile uint16_t interruptCounter = 0;
 // --- Variable declaration ---
@@ -111,11 +112,11 @@ ISR(TIMER0_COMPA_vect) {
     // Increment the second counter by 1, print the seconds and then move the servo
     // to show that a second has passed.
     if (interruptCounter == ISR_TRIGGER_PER_SEC) {
-        if (secondCounter == UINT32_MAX) {
-            secondCounter = 0;
-        } else {
-            secondCounter++;
+        // If The counter has reached 0, set it back to TIMER_VAL and start again
+        if (secondCounter == 0) {
+            secondCounter = TIMER_VAL;
         }
+        secondCounter--;
 
         Serial.print("Seconds: ");
         Serial.println(secondCounter);
