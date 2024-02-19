@@ -85,7 +85,7 @@ void sort(int size, int tab[]) {
         // We want to bubble the smallest elements up
         // So if element held at index i is smaller than the element held at i + 1,
         // swap them
-        if (tab[i] < tab[i + 1]) {
+        if (tab[i] > tab[i + 1]) {
             swap(tab, i, i + 1);
         }
     }
