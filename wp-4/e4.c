@@ -1,7 +1,7 @@
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
 // Work package 4
 // Exercise 4
-// Submission code: xxxxxxx
+// Submission code: 
 
 // Include section
 #include <stdio.h>
