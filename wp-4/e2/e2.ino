@@ -1,11 +1,11 @@
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
 // Work package 4
 // Exercise 2
-// Submission code: 
+// Submission code: 527499
 
 //Define section
 #define SERVO 3 // Servo motor
-#define SERVO_PULSE_DURATION 50000 // 20ms in microseconds
+#define SERVO_PULSE_DURATION 50000 // Refresh rate of servo
 #define ADC_RESOLUTION 1023.0 // ADC resolution of Arduino
 #define MAX_VOLT_MV 5000.0 // Reference voltage
 #define CLOCK_SPEED 16000000.0 // Clock speed of Uno

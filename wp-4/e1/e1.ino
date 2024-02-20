@@ -1,7 +1,7 @@
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
 // Work package 4
 // Exercise 1
-// Submission code: 
+// Submission code: 527499
 
 //Define section
 #define COLDEST 7 // White LED

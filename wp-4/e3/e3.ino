@@ -1,7 +1,7 @@
 // (C) Omid Khodaparast, Alexander Säfström, Kaisa Arumeel - Group 2 
 // Work package 4
 // Exercise 3
-// Submission code: 
+// Submission code: 527499
 
 
 #include <Adafruit_NeoPixel.h> // adding a NeoPixel library for the NeoPixel ring
