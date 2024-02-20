@@ -1,178 +1,65 @@
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
-// Work package 4
+// Work package 3
 // Exercise 1
-// Submission code: 527499
+// Submission code: 384024
 
-//Define section
-#define COLDEST 7 // White LED
-#define COLDER 6 // Blue LED
-#define WARM 5 // Yellow LED
-#define WARMER 4 // Orange LED
-#define WARMEST 3 // Red LED
-#define TEMP_SENSOR A0 // Temperature sensor
-#define ADC_RESOLUTION 1023.0 // ADC resolution of Arduino
-#define MAX_VOLT_MV 5000.0 // Reference voltage
-#define CLOCK_SPEED 16000000.0 // Clock speed of Uno
-#define PRESCALER 1024.0 // Prescaler of choice to emulate slow clock
-#define SECONDS_INTERVAL 0.5 // Every x seconds to update LEDs
-
-//Main program section
+// Define section
+#define LED_1_PIN 2
+#define LED_2_PIN 7
+#define PUSHDOWN_B_PIN 11
 
 /**
-* This program uses Timer interrupts on arduino to light up
-* different LEDs depending on the current temperature in
-* its environmen.
-* 
-* Purpose: To learn about timer interrupts and internal
-* structure of the Arduino MCU.
-* DIT632
-*
-**/
+ * This program makes use of LEDs and a pushdown button.
+ * The purpose of the program is to make a LED blink every one sec and
+ * use the pushdown button to turn on the other LED.
+ * When the button is pressed, the LED is turned on and when it is not pressed
+ * the LED is turned off.
+*/
 
-// Used to get x millivolts from pin y
-float getmV(int pin);
+int pushBtnVal; // Variable to save input received by pushdown button
 
-// Used to calculate temperature and turn on correct led.
-void calcTemp();
-
-// Used to define threshold for deviations
-typedef struct {
-  float minTemp;
-  int pin;
-} Threshold;
-
-Threshold thresholds[] ={
-  {0.0, 7}, // >=0
-  {11.0, 6}, // >=11
-  {21.0, 5}, // >=21
-  {31.0, 4}, // >=31
-  {41.0, 3} // >=41
-};
-
-volatile float R1 = 10000; // value of R1 on board
-volatile float logR2, R2, T;
-volatile float c1 = 0.001129148, c2 = 0.000234125, c3 = 0.0000000876741; //steinhart-hart coeficients for thermistor
-
-void setup()
-{
-  // Variable declarations
-  int i=0; // To keep track of where we are in loop
-  float CMR; // To store our Compare Match Register value
-  
-  // Loop through all thresholds
-  for(i=0;i<(sizeof(thresholds)/sizeof(Threshold));i++){
-    // Define each led to be on output mode.
-    pinMode(thresholds[i].pin,OUTPUT);
-  }
-  
-  // Set the temperature sensor to be input mode.
-  pinMode(TEMP_SENSOR,INPUT);
-  Serial.begin(9600);
-  
-  // Clear all previous interrupts.
-  cli();
-  
-  /* 
-  * On Arduino Uno timer 0 and timer 2 are 8-bit timers.
-  * This means that their max value is 255.
-  * Timer 1 is a 16 bit timer, with max value 65535.
-  * Using a prescaler we can slow down the clock to get
-  * a wanted interval. I want an interval of 500ms therefore
-  * I must use the timer 1.
-  * 
-  * Hz = Clock Speed / Prescaler
-  * 
-  * To be able to create a timer interrupt, we need to calculate
-  * a value that we can put in the compare match register of timer 1.
-  * 
-  * CMR = ( 16,000,000Hz / (prescaler * desired interrupt frequency) ) - 1
-  *	
-  * The desired interrupt frequency in this case is 2HZ.
-  * 
-  * We can calculate Hz by doing 1/x seconds.
-  *
-  * Prescalers: 256 and 1024 work but since 1024 will use less range in the
-  * timer 1 we will use 1024.
-  * 
-  * We do -1 because the timer's are zero-indexed.
-  * 
-  * Therefore our CMR value is:
-  * 
-  * CMR = 7811.5 = ( 16,000,000Hz / (1024 * 2Hz) ) - 1
-  * 
-  * We will round the value to 7812.
-  */
-  
-  // Calculate the CMR value using above equation.
-  CMR = (CLOCK_SPEED / (PRESCALER * (1.0/SECONDS_INTERVAL)))-1.0;
-  
-  TCCR1A = 0; // Timer Counter Register 1A
-  TCCR1B = 0; // Timer Counter Register 1B
-  TCNT1 = 0; // Timer Counter 1
-  
-  // Here we set the CMR value we calculated earlier.
-  OCR1A = (int) CMR; // Output Compare Register 1A
-  
-  // The timer counter register 1b holds information
-  // about which mode to use with the timer.
-  // We want to use CTC mode that clears the timer when
-  // the TCNT1 value matches our OCR1A value.
-  // We use bitwise OR to set the WGM12 bit to true.
-  TCCR1B = TCCR1B | (1 << WGM12);
-  
-  // Activating CS12 and CS10 yields in a prescale value of 1024.
-  TCCR1B = TCCR1B | (1 << CS12) | (1 << CS10); 
-  
-  // Activating OCIE1A on TIMSK1 means:
-  // that we enable the Output Compare A Match Interrupt Enable.
-  // This means that an interrupt will be created whenever the timer
-  // value in TCNT1 matches  the OCR1A Value.
-  TIMSK1 = TIMSK1 | (1<<OCIE1A); // Timer Interrupt Mask Register 1
-	
-  // Calling sei() allows the MCU to react to any
-  // configured interrupt sources.
-  sei();
-
-  Serial.begin(9600);
-
+// The steup function, executed once when executable code is flushed on the board
+void setup() {
+    // Set the pin connecting LED 1 to the Uno as OUTPUT
+    // This is due to the fact that the Uno will construct when the 
+    // LED is to be turned on or turned off
+	pinMode(LED_1_PIN, OUTPUT);
+    // Set the pin connecting LED 2 to the Uno as OUTPUT
+    pinMode(LED_2_PIN, OUTPUT);
+    // Set the pin connecting the pushdown button to the uno as INPUT
+    // This is due to the fact that we want to read input from the button,
+    // aka, when it is pressed, and when it is not pressed
+    pinMode(PUSHDOWN_B_PIN, INPUT);
 }
 
-void loop(){}
+// The loop function, executed forever by the Uno. It is basically and infinite loop
+void loop() {
+    // Read the input received by the pushdown button.
+    // Note that the the values received are either 1 (aka HIGH), or 0 (aka LOW)
+	pushBtnVal = digitalRead(PUSHDOWN_B_PIN);
 
-// Interrupt Service Routine on Timer1 Compare Match A
-// Whent the value of TCNT1 matches the OCR1A value,
-// the mcu looks in the interrupt vector table. There
-// it will be able to find the address of the function/ISR to execute.
-// We do not have to worry about placing the function address,
-// as this is done by the linker, a tool in compilation that aids
-// in placing and populating information in the correct places.
-ISR(TIMER1_COMPA_vect) {
-  // The following code is the "vector"/address that will be called. 
-  int temp; // Used to store temperature
-  int i; // To keep track of where we are in loop.
-  int ADC_COUNT =ADC_RESOLUTION - analogRead(TEMP_SENSOR);
+    // LED_1 should blink periodocally, every one sec
+    // Start by having LED_1 off
+    digitalWrite(LED_1_PIN, LOW);
 
-  // Calculate the resistance of the thermistor 
-  R2 = R1 * (ADC_RESOLUTION / (float)Vo - 1.0); //calculate resistance on thermistor
-
-  // Calculating the logarithm of the resistance
-  logR2 = log(R2);
-
-  // Calculate the temperature in 
-  temp = (1.0/ (c1 + c2*logR2 + c3*logR2*logR2*logR2)); // temperature in Kelvin
-  temp  = temp - 273.15; //convert Kelvin to Celcius
-
-  Serial.println(temp);
-  // Loop through all the thresholds
-  for(i=0;i<(sizeof(thresholds)/sizeof(Threshold));i++){
-    // If the temperature is greater than min. threshold
-    if(temp>=thresholds[i].minTemp){
-      	// We can light up the LED by sending HIGH signal
-    	digitalWrite(thresholds[i].pin,HIGH);
+    // Based on the value received from reading the button input
+    // If it is HIGH, turn LED_2 on.
+    // If not (it is LOW), turn it off
+    if (pushBtnVal) {
+        digitalWrite(LED_2_PIN, HIGH);
     } else {
-      	// If the temperature is too low, we will turn off
-        // the LED for this pin.
-        digitalWrite(thresholds[i].pin,LOW);
+        digitalWrite(LED_2_PIN, LOW);
     }
-  }
+    
+    // Delay for one sec, as LED_1 should blink
+    // The delay function delays by mili seconds
+    // 1000 milli sec = 1 sec
+    delay(1000);
+    // Turn LED_1 on
+    digitalWrite(LED_1_PIN, HIGH);
+    // 1000 milli sec = 1 sec
+    delay(1000);
+
+    // The next Iteration, we will read button input again
+    // Turn off LED_1 and so on
 }
