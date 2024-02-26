@@ -1,8 +1,3 @@
-// (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
-// Work package 6
-// Exercise 1
-// Submission code:
-
 // Include section
 #include <stdlib.h>
 #include <string.h>
@@ -27,8 +22,6 @@
  *
  * Purpose: To spin the motor round and round.
  * DIT632
- *
- * https://www.tinkercad.com/things/esUo7U97Ksc-wp6e1?sharecode=5n4vUP47XHrkD_Svh4Gdm53X3Eh-mS82136mn8O2fT0
  *
  **/
 
@@ -162,7 +155,8 @@ void loop() {
     command = Serial.readStringUntil('\n');
 
     // The first three characters are degree specs
-    userDegrees = atoi(command.substring(0, 3).c_str());
+    // We perform modulus to handle with overlapping degrees.
+    userDegrees = atoi(command.substring(0, 3).c_str())%361;
 
     // The second three characaters are speed specs
     userSpeed = atoi(command.substring(3, 6).c_str());
