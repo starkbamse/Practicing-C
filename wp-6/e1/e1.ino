@@ -116,18 +116,22 @@ void loop() {
 }
 
 int getInput(){
+  int ready = 0; // This variable wil hold the value returned by Serial.readBytes()
+  char buf[3]; // We ony accept 1 to 3 digit numbers
+  int input = -1; // Initial input is -1
   
-  int ready = 0;
-  char buf[3];
-  int input = -1;
-  
+  // Ask the user to input the position they want
   Serial.print("Please enter the desired position: \n");
   
+  // While there input to read, meaning tht Serial.readBytes() does not return 0,
+  // read input
   while(!ready){
     ready = Serial.readBytes(buf,3);
+    // Convert to integer. Note that if provided input is not an integer, 0 will be returned.
     input = atoi(&buf[0]);
   }
- 
+    
+  // Return input
   return input;
 }  
 
@@ -136,36 +140,29 @@ int getAction(int error){
   ==> TO DO TO DO TO DO
   Calculate u_out as function of the error and the kp (tuning parameter).
   */
-  // 
-  // if (u_out < ((kp + 1) * error) && kpTunningCounter != 0) {
-  //   kp--;
-  // }
-// 
-  // if (u_out > ((kp + 1) * error) && kpTunningCounter != 0) {
-  //   kp++;
-  // }
-  // 
-  // kpTunningCounter++;
+  // u_out is kp constant times the error
   u_out = kp * error;
   
-  if (u_out > 254){ //u_out cannot be more than 255...
+  //u_out cannot be more than 255...
+  if (u_out > 254){ 
   	return 255;
   }
-  else if (u_out < -254){ //...or less than -254
+  //...or less than -254
+  else if (u_out < -254){ 
     return -255;
   }  
   else
      return u_out;
 }
 
-// The interrupt service routing happens when signal A rises. At that point, if signal B
-// is low, then we are moving clock-wise, and if signal B is high, then we are moving anti clock-wise
 void ISR_readEncoder(){
   /*
   ==> TO DO TO DO TO DO
   READ THE ENCODER SIGNAL HERE.
   Read the encoder signals and increase or decrease pos accordingly.
   */
+  // The interrupt service routing happens when signal A rises. At that point, if signal B
+  // is low, then we are moving clock-wise, and if signal B is high, then we are moving anti clock-wise
 
   // Read the value of channel B
   b = digitalRead(ENCB);
