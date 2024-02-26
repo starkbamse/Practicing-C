@@ -24,8 +24,6 @@
  * Purpose: To protect people against robbery.
  * DIT632
  *
- * https://www.tinkercad.com/things/dhLp5rPxIpO-wp6e2?sharecode=ypmWsPsocguCNZwuzv2i4Tq_GY2OkAMyEf2gOtHsrDk
- *
  **/
 
 // Used to measure the distance using the ultrasonic sensor
@@ -147,7 +145,7 @@ float measureDistance() {
   // Used for retrieving time taken to receive pulse
   float timeTaken = 0;
 
-  // Turn off the ultrasonic
+  // Turn off the ultrasonic trigger pin
   digitalWrite(ULTRASONIC_TRIG, LOW);
 
   // Delay for 2 ms
