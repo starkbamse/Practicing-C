@@ -1,3 +1,8 @@
+// (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
+// Work package 6
+// Exercise 1
+// Submission code:
+
 // Include section
 #include <stdlib.h>
 #include <string.h>
@@ -22,6 +27,8 @@
  *
  * Purpose: To spin the motor round and round.
  * DIT632
+ *
+ * https://www.tinkercad.com/things/esUo7U97Ksc-wp6e1?sharecode=5n4vUP47XHrkD_Svh4Gdm53X3Eh-mS82136mn8O2fT0
  *
  **/
 
