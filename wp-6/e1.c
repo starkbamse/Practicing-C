@@ -145,7 +145,7 @@ void setup() {
 void loop() {
   String command; // Used to store the users input
   int degrees;    // Number of degrees
-
+  int error;      // The error term used in the feedback loop for adj. position
   // If we have user input
   if (Serial.available() > 0) {
     // We want to start counting signals
@@ -213,8 +213,7 @@ void loop() {
     }
     // Calculate the degrees by taking the absolute error term
     // and mapping it to 0 through 360 degrees
-    degrees = map(abs(config.flanksRisenA), 0.0, config.flanksMaxA, 0.0, 360.0);
-
+    degrees = map(abs(config.flanksRisenA), 0.0, config.flanksMaxA, 0.0, 361.0);
     // When the motor spins in different directions over time,
     // especially in half rotations or full rotations, the signals
     // get out of sync unnecessarily and grow into very large numbers.
@@ -224,7 +223,7 @@ void loop() {
       // Set the signal count for channel B by reverse mapping the
       // current degrees to its corresponding signal value interval
       // that we have calculated during calibration phase.
-      config.flanksRisenB = map(degrees, 0.0, 360.0, 0.0, config.flanksMaxB);
+      config.flanksRisenB = map(degrees, 0.0, 361.0, 0.0, config.flanksMaxB);
     }
 
   } else {
@@ -237,7 +236,7 @@ void loop() {
 
     // Calculate the degrees by taking the absolute error term
     // and mapping it to 0 through 360 degrees
-    degrees = map(abs(config.flanksRisenB), 0.0, config.flanksMaxB, 0.0, 360.0);
+    degrees = map(abs(config.flanksRisenB), 0.0, config.flanksMaxB, 0.0, 361.0);
 
     // When the motor spins in different directions over time,
     // especially in half rotations or full rotations, the signals
@@ -248,13 +247,17 @@ void loop() {
       // Set the signal count for channel B by reverse mapping the
       // current degrees to its corresponding signal value interval
       // that we have calculated during calibration phase.
-      config.flanksRisenA = map(degrees, 0.0, 360.0, 0.0, config.flanksMaxA);
+      config.flanksRisenA = map(degrees, 0.0, 361.0, 0.0, config.flanksMaxA);
     }
   }
 
-  // If the current degrees are equal to the requested degrees
+  // Calculate the error term.
+  // We do not care about direction, therefore we get the absolute value.
+  error = abs(degrees - userDegrees);
+
+  // If the error term is 0 (we are at target position)
   // and we have a pending command from the user
-  if (degrees == userDegrees && pendingCommand) {
+  if (error == 0 && pendingCommand) {
     // Stop the motor.
     setSpeed(0);
     // Deactivate the command
