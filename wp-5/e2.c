@@ -1,6 +1,6 @@
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
-// Work package 4
-// Exercise 1
+// Work package 5
+// Exercise 2
 // Submission code: 384024
 
 // Define section
@@ -21,7 +21,7 @@
 /**
  * This program uses Timer interrupts on arduino to light up
  * different LEDs depending on the current temperature in
- * its environmen.
+ * its environment.
  *
  * Purpose: To learn about timer interrupts and internal
  * structure of the Arduino MCU.

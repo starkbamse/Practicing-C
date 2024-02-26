@@ -1,7 +1,7 @@
 // (C) __Omid Khodaparast, Alexander Säfström, Kaisa Arumeel, group: 2 __ (2024)
-// Work package 3
-// Exercise 2
-// Submission code: 346221
+// Work package 5
+// Exercise 3
+// Submission code: 384024
 
 // Define section
 #define ADC_RESOLUTION 1023.0 // ADC Resolution of 10 bit
