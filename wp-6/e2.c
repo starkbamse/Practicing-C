@@ -4,10 +4,11 @@
 // Submission code:
 
 // Define section
-#define LED_MIN 3              // First LED
-#define LED_MAX 6              // Last LED
+#define LED_MIN 2              // First LED
+#define LED_MAX 5              // Last LED
 #define PIEZO 9                // Pin of the piezo speaker
-#define ULTRASONIC 7           // Ultrasonic pin
+#define ULTRASONIC_TRIG 6      // Ultrasonic pin trigger
+#define ULTRASONIC_ECHO 7	   // Ultrasonic pin trigger
 #define SOUND_SPEED 0.0343     // Sound speed in cms/microsecond
 #define MIN_DISTANCE 25.0      // Minimum distance
 #define MAX_DISTANCE 200.0     // Maximum distance
@@ -50,6 +51,9 @@ void setup() {
 
   // Set piezo speaker to output
   pinMode(PIEZO, OUTPUT);
+  
+  pinMode(ULTRASONIC_TRIG, OUTPUT);
+  pinMode(ULTRASONIC_ECHO, INPUT);
 }
 
 void loop() {
@@ -143,29 +147,23 @@ float measureDistance() {
   // Used for retrieving time taken to receive pulse
   float timeTaken = 0;
 
-  // Set pinmode of the ultrasonic sensor to output
-  pinMode(ULTRASONIC, OUTPUT);
-
   // Turn off the ultrasonic
-  digitalWrite(ULTRASONIC, LOW);
+  digitalWrite(ULTRASONIC_TRIG, LOW);
 
   // Delay for 2 ms
   delay(2);
 
   // Transmit ultrasound
-  digitalWrite(ULTRASONIC, HIGH);
+  digitalWrite(ULTRASONIC_TRIG, HIGH);
 
   // Wait for 10ms
   delay(10);
 
   // Stop transmitting ultrasound
-  digitalWrite(ULTRASONIC, LOW);
-
-  // Receive ultrasound waves
-  pinMode(ULTRASONIC, INPUT);
+  digitalWrite(ULTRASONIC_TRIG, LOW);
 
   // Read the time taken for pulse to come in
-  timeTaken = pulseIn(ULTRASONIC, HIGH);
+  timeTaken = pulseIn(ULTRASONIC_ECHO, HIGH);
 
   // Return the distance. We divide by
   // two because we only want the distance from
